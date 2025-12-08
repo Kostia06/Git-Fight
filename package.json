@@ -4,7 +4,6 @@
   "description": "Ultimate GitHub Developer Battle Arena",
   "scripts": {
     "dev": "vercel dev",
-    "build": "vercel build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0"
