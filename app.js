@@ -423,11 +423,13 @@ function setupEventListeners() {
     });
 
     // Settings
-    $('settings-btn').addEventListener('click', () => {
+    $('settings-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
         $('settings-panel').classList.add('open');
     });
 
-    $('close-settings').addEventListener('click', () => {
+    $('close-settings').addEventListener('click', (e) => {
+        e.stopPropagation();
         $('settings-panel').classList.remove('open');
     });
 

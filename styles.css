@@ -439,8 +439,8 @@ body {
 
 .achievement-popup {
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -450,12 +450,14 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), 0 0 80px rgba(181, 55, 242, 0.4);
     z-index: 3000;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform: translateX(400px) scale(0.8);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .achievement-popup.show {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(0) scale(1);
+    opacity: 1;
 }
 
 .achievement-icon {
@@ -1707,18 +1709,18 @@ body {
 
 .fight-section {
     text-align: center;
-    margin: 25px 0 15px;
+    margin: 12px 0 10px;
 }
 
 .fight-btn {
     position: relative;
     display: inline-block;
-    padding: 18px 50px;
+    padding: 12px 35px;
     background: transparent;
     border: none;
     cursor: pointer;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
 .fight-btn::before {
@@ -1727,7 +1729,7 @@ body {
     inset: -2px;
     background: linear-gradient(45deg, #ff2a6d, #d946ef, #05d9e8, #39ff14, #ff2a6d);
     background-size: 400% 400%;
-    border-radius: 14px;
+    border-radius: 12px;
     animation: rainbowBorder 8s linear infinite;
     opacity: 0.6;
     z-index: -1;
@@ -1744,10 +1746,10 @@ body {
     position: absolute;
     inset: 0;
     background: var(--gradient-pink);
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow:
-        0 6px 0 #8b1539,
-        0 10px 30px rgba(255, 42, 109, 0.4),
+        0 4px 0 #8b1539,
+        0 8px 25px rgba(255, 42, 109, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: all 0.1s;
     animation: fightBtnPulse 1.5s ease-in-out infinite;
@@ -1756,15 +1758,15 @@ body {
 @keyframes fightBtnPulse {
     0%, 100% {
         box-shadow:
-            0 6px 0 #8b1539,
-            0 10px 30px rgba(255, 42, 109, 0.4),
+            0 4px 0 #8b1539,
+            0 8px 25px rgba(255, 42, 109, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
     50% {
         box-shadow:
-            0 6px 0 #8b1539,
-            0 10px 40px rgba(255, 42, 109, 0.6),
-            0 0 60px rgba(255, 42, 109, 0.3),
+            0 4px 0 #8b1539,
+            0 8px 35px rgba(255, 42, 109, 0.6),
+            0 0 50px rgba(255, 42, 109, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 }
@@ -1782,15 +1784,15 @@ body {
 .fight-btn:hover .fight-btn-bg {
     transform: translateY(-2px);
     box-shadow:
-        0 8px 0 #8b1539,
-        0 15px 40px rgba(255, 42, 109, 0.5),
-        0 0 80px rgba(255, 42, 109, 0.4);
+        0 6px 0 #8b1539,
+        0 12px 35px rgba(255, 42, 109, 0.5),
+        0 0 60px rgba(255, 42, 109, 0.4);
     animation: none;
 }
 
 .fight-btn:active .fight-btn-bg {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #8b1539;
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #8b1539;
 }
 
 .fight-btn-content {
@@ -1798,17 +1800,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     z-index: 2;
 }
 
 .fight-icon {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 .fight-text {
     font-family: var(--font-display);
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -1830,7 +1832,7 @@ body {
 }
 
 .fight-hint {
-    margin-top: 12px;
+    margin-top: 8px;
     font-family: var(--font-tech);
     font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.5);
@@ -4308,6 +4310,26 @@ body {
    ============================================ */
 
 @media (max-width: 768px) {
+    .achievement-popup {
+        top: 10px;
+        right: 10px;
+        padding: 15px 20px;
+        max-width: calc(100vw - 20px);
+        font-size: 0.85rem;
+    }
+
+    .achievement-icon {
+        font-size: 1.5rem;
+    }
+
+    .achievement-title {
+        font-size: 0.75rem;
+    }
+
+    .achievement-desc {
+        font-size: 0.65rem;
+    }
+
     .arcade-screen {
         padding: 12px;
         min-height: calc(100vh - 40px);
@@ -4522,11 +4544,11 @@ body {
     }
 
     .fight-btn {
-        padding: 15px 40px;
+        padding: 10px 30px;
     }
 
     .fight-text {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 
     .section-title {
@@ -4808,8 +4830,8 @@ body {
     }
 
     .fight-btn {
-        padding: 8px 30px;
-        font-size: 1rem;
+        padding: 8px 25px;
+        font-size: 0.9rem;
     }
 
     .fight-icon {
