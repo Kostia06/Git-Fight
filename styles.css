@@ -858,13 +858,18 @@ body {
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
     z-index: 1500;
     transform: translateX(100%);
-    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, visibility 0s 0.3s;
     display: flex;
     flex-direction: column;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .settings-panel.open {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.3s ease-out;
 }
 
 .settings-header {
