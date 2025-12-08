@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d0221">
+    <meta name="description" content="Git Fight">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>GIT FIGHT</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Russo+One&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Retro Grid Background -->
+    <div class="retro-bg">
+        <div class="grid-floor"></div>
+        <div class="sun">
+            <div class="sun-rays"></div>
+        </div>
+        <div class="mountains"></div>
+        <div class="horizon-glow"></div>
+    </div>
+
+    <!-- Animated Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- CRT Effects Layer -->
+    <div class="crt-effects">
+        <div class="scan-lines"></div>
+        <div class="vhs-tracking"></div>
+        <div class="crt-flicker"></div>
+        <div class="crt-vignette"></div>
+    </div>
+
+    <!-- Floating Stars -->
+    <div class="stars-container" id="stars"></div>
+
+    <!-- Glitch Overlay -->
+    <div class="glitch-overlay" id="glitch-overlay"></div>
+
+    <!-- Fight Announcer -->
+    <div class="announcer" id="announcer">
+        <div class="announcer-text"></div>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div class="achievement-icon"></div>
+        <div class="achievement-info">
+            <div class="achievement-title"></div>
+            <div class="achievement-desc"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="arcade-cabinet">
+        <div class="cabinet-top">
+            <div class="marquee">
+                <span class="marquee-text">GIT FIGHT</span>
+                <div class="marquee-lights">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="arcade-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+
+            <div class="arcade-screen">
+                <!-- VHS Recording Indicator -->
+                <div class="vhs-record">
+                    <span class="rec-dot"></span>
+                    <span class="rec-text">REC</span>
+                    <span class="vhs-time" id="vhs-time">00:00:00</span>
+                    <span class="play-icon">▶ PLAY</span>
+                </div>
+
+                <!-- Settings Panel -->
+                <div class="settings-panel" id="settings-panel">
+                    <div class="settings-header">
+                        <h3>OPTIONS</h3>
+                        <button class="close-settings" id="close-settings">✕</button>
+                    </div>
+                    <div class="settings-content">
+                        <label class="retro-toggle">
+                            <input type="checkbox" id="sound-toggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">
+                                <span class="toggle-icon">🔊</span>
+                                SOUND FX
+                            </span>
+                        </label>
+                        <label class="retro-toggle">
+                            <input type="checkbox" id="crt-toggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">
+                                <span class="toggle-icon">📺</span>
+                                CRT EFFECT
+                            </span>
+                        </label>
+                        <label class="retro-toggle">
+                            <input type="checkbox" id="vhs-toggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">
+                                <span class="toggle-icon">📼</span>
+                                VHS LINES
+                            </span>
+                        </label>
+                        <label class="retro-toggle">
+                            <input type="checkbox" id="particles-toggle" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">
+                                <span class="toggle-icon">✨</span>
+                                PARTICLES
+                            </span>
+                        </label>
+                        <div class="settings-divider"></div>
+                        <button class="retro-btn danger" id="clear-stats-btn">
+                            <span>🗑</span> CLEAR ALL DATA
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Title Screen -->
+                <div id="title-screen" class="screen active">
+                    <!-- Settings Button -->
+                    <button class="settings-btn" id="settings-btn" aria-label="Settings">
+                        <span class="gear-icon">⚙</span>
+                    </button>
+
+                    <div class="title-section">
+                        <div class="chrome-title">
+                            <div class="title-glow"></div>
+                            <h1 class="main-title" data-text="GIT FIGHT">
+                                <span class="title-line">GIT FIGHT</span>
+                            </h1>
+                        </div>
+                        <div class="title-tagline">
+                            <span class="tagline-decorator">◆</span>
+                            ULTIMATE GITHUB DEVELOPER SHOWDOWN
+                            <span class="tagline-decorator">◆</span>
+                        </div>
+                        <div class="title-year">ESTABLISHED 1967</div>
+                    </div>
+
+                    <div class="insert-coin">
+                        <div class="coin-slot">
+                            <span class="coin-icon">🪙</span>
+                        </div>
+                        <span class="blink-text">► INSERT FIGHTERS TO BEGIN ◄</span>
+                    </div>
+
+                    <div class="player-select">
+                        <div class="player-card p1">
+                            <div class="card-glow"></div>
+                            <div class="card-header">
+                                <div class="player-badge">P1</div>
+                                <div class="player-role">CHALLENGER</div>
+                                <div class="player-rank" id="p1-rank">ROOKIE</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="avatar-container" id="p1-avatar-container">
+                                    <div class="avatar-placeholder">
+                                        <span>?</span>
+                                    </div>
+                                    <img class="avatar-img" id="p1-avatar" src="" alt="">
+                                    <div class="avatar-ring"></div>
+                                    <div class="avatar-particles"></div>
+                                </div>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">@</span>
+                                    <input type="text" id="player1" placeholder="username" autocomplete="off" spellcheck="false" maxlength="39">
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="player-stats-preview" id="p1-stats-preview">
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">⭐</span>
+                                        <span class="preview-value" id="p1-stars">-</span>
+                                    </div>
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">👥</span>
+                                        <span class="preview-value" id="p1-followers">-</span>
+                                    </div>
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">📦</span>
+                                        <span class="preview-value" id="p1-repos">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="power-section">
+                                <div class="power-header">
+                                    <span class="power-label">POWER LEVEL</span>
+                                    <span class="power-value" id="p1-power-val">???</span>
+                                </div>
+                                <div class="power-bar-container">
+                                    <div class="power-bar">
+                                        <div class="power-fill" id="p1-power"></div>
+                                        <div class="power-segments">
+                                            <span></span><span></span><span></span><span></span>
+                                            <span></span><span></span><span></span><span></span>
+                                            <span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vs-section">
+                            <div class="vs-container">
+                                <div class="vs-electricity"></div>
+                                <div class="vs-badge">
+                                    <span class="vs-text">VS</span>
+                                </div>
+                                <div class="vs-electricity"></div>
+                            </div>
+                            <div class="vs-sparks">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+
+                        <div class="player-card p2">
+                            <div class="card-glow"></div>
+                            <div class="card-header">
+                                <div class="player-badge">P2</div>
+                                <div class="player-role">DEFENDER</div>
+                                <div class="player-rank" id="p2-rank">ROOKIE</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="avatar-container" id="p2-avatar-container">
+                                    <div class="avatar-placeholder">
+                                        <span>?</span>
+                                    </div>
+                                    <img class="avatar-img" id="p2-avatar" src="" alt="">
+                                    <div class="avatar-ring"></div>
+                                    <div class="avatar-particles"></div>
+                                </div>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">@</span>
+                                    <input type="text" id="player2" placeholder="username" autocomplete="off" spellcheck="false" maxlength="39">
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="player-stats-preview" id="p2-stats-preview">
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">⭐</span>
+                                        <span class="preview-value" id="p2-stars">-</span>
+                                    </div>
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">👥</span>
+                                        <span class="preview-value" id="p2-followers">-</span>
+                                    </div>
+                                    <div class="preview-stat">
+                                        <span class="preview-icon">📦</span>
+                                        <span class="preview-value" id="p2-repos">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="power-section">
+                                <div class="power-header">
+                                    <span class="power-label">POWER LEVEL</span>
+                                    <span class="power-value" id="p2-power-val">???</span>
+                                </div>
+                                <div class="power-bar-container">
+                                    <div class="power-bar">
+                                        <div class="power-fill" id="p2-power"></div>
+                                        <div class="power-segments">
+                                            <span></span><span></span><span></span><span></span>
+                                            <span></span><span></span><span></span><span></span>
+                                            <span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fight-section">
+                        <button class="fight-btn" id="fight-btn">
+                            <div class="fight-btn-bg"></div>
+                            <div class="fight-btn-content">
+                                <span class="fight-icon">⚔</span>
+                                <span class="fight-text">FIGHT!</span>
+                            </div>
+                            <div class="fight-btn-shine"></div>
+                        </button>
+                        <div class="fight-hint">
+                            <span class="key-hint">ENTER</span> to start battle
+                        </div>
+                    </div>
+
+                    <div class="error-display" id="error-msg"></div>
+
+                    <div class="quick-match-section">
+                        <div class="section-title">
+                            <span class="title-icon">⚡</span>
+                            QUICK MATCH
+                        </div>
+                        <div class="quick-btns">
+                            <button class="quick-btn" data-p1="torvalds" data-p2="gaearon">
+                                <span class="quick-icon">👑</span>
+                                <span class="quick-label">LEGENDS</span>
+                                <span class="key-hint-tiny">1</span>
+                            </button>
+                            <button class="quick-btn" data-p1="sindresorhus" data-p2="tj">
+                                <span class="quick-icon">🌟</span>
+                                <span class="quick-label">ICONS</span>
+                                <span class="key-hint-tiny">2</span>
+                            </button>
+                            <button class="quick-btn" data-p1="yyx990803" data-p2="gaearon">
+                                <span class="quick-icon">⚛</span>
+                                <span class="quick-label">FRAMEWORKS</span>
+                                <span class="key-hint-tiny">3</span>
+                            </button>
+                            <button class="quick-btn random-btn" id="random-btn">
+                                <span class="quick-icon">🎲</span>
+                                <span class="quick-label">RANDOM</span>
+                                <span class="key-hint-tiny">R</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="hall-of-fame-btn">
+                            <span class="nav-icon">🏆</span>
+                            <span class="nav-label">HALL OF FAME</span>
+                            <span class="key-hint-small">[H]</span>
+                        </button>
+                        <button class="nav-btn" id="achievements-btn">
+                            <span class="nav-icon">🎖</span>
+                            <span class="nav-label">ACHIEVEMENTS</span>
+                            <span class="key-hint-small">[A]</span>
+                        </button>
+                        <button class="nav-btn" id="leaderboard-btn">
+                            <span class="nav-icon">🌍</span>
+                            <span class="nav-label">LEADERBOARD</span>
+                            <span class="key-hint-small">[L]</span>
+                        </button>
+                    </div>
+
+                    <!-- Stats Counter -->
+                    <div class="stats-counter-bar">
+                        <div class="stat-box">
+                            <span class="stat-icon">⚔</span>
+                            <div class="stat-info">
+                                <span class="stat-label">TOTAL BATTLES</span>
+                                <span class="stat-value" id="total-battles">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-icon">🔥</span>
+                            <div class="stat-info">
+                                <span class="stat-label">TODAY</span>
+                                <span class="stat-value" id="today-battles">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-box streak-box">
+                            <span class="stat-icon">⚡</span>
+                            <div class="stat-info">
+                                <span class="stat-label">WIN STREAK</span>
+                                <span class="stat-value" id="win-streak">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-bar">
+                        <div class="api-status">
+                            <div class="status-led" id="status-led"></div>
+                            <span id="api-status">SYSTEM ONLINE</span>
+                        </div>
+                        <div class="footer-links">
+                            <a href="https://github.com" target="_blank" class="footer-link">
+                                <span>GitHub API</span>
+                            </a>
+                        </div>
+                        <div class="credits">
+                            <span title="Enter: Start | Settings: [S] | Tab: Switch Inputs | ESC: Back">v2.0 ULTIMATE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Screen -->
+                <div id="loading-screen" class="screen">
+                    <div class="loading-fighters">
+                        <div class="loading-fighter left">
+                            <div class="fighter-silhouette p1">
+                                <img id="load-p1-img" src="" alt="">
+                                <div class="silhouette-glow"></div>
+                            </div>
+                            <div class="fighter-name-tag" id="load-p1-name">???</div>
+                            <div class="fighter-rank-tag" id="load-p1-rank">ANALYZING...</div>
+                        </div>
+
+                        <div class="loading-vs">
+                            <div class="energy-orb">
+                                <div class="orb-core"></div>
+                                <div class="orb-ring"></div>
+                                <div class="orb-ring delay"></div>
+                            </div>
+                            <div class="loading-vs-text">VS</div>
+                        </div>
+
+                        <div class="loading-fighter right">
+                            <div class="fighter-silhouette p2">
+                                <img id="load-p2-img" src="" alt="">
+                                <div class="silhouette-glow"></div>
+                            </div>
+                            <div class="fighter-name-tag" id="load-p2-name">???</div>
+                            <div class="fighter-rank-tag" id="load-p2-rank">ANALYZING...</div>
+                        </div>
+                    </div>
+
+                    <div class="loading-info">
+                        <h2 class="loading-title" id="loading-title">INITIALIZING COMBAT</h2>
+                        <div class="loading-phases">
+                            <div class="phase" data-phase="1">
+                                <div class="phase-indicator"></div>
+                                <span class="phase-text">DOWNLOADING FIGHTER DATA</span>
+                            </div>
+                            <div class="phase" data-phase="2">
+                                <div class="phase-indicator"></div>
+                                <span class="phase-text">SCANNING REPOSITORIES</span>
+                            </div>
+                            <div class="phase" data-phase="3">
+                                <div class="phase-indicator"></div>
+                                <span class="phase-text">CALCULATING POWER LEVELS</span>
+                            </div>
+                            <div class="phase" data-phase="4">
+                                <div class="phase-indicator"></div>
+                                <span class="phase-text">PREPARING ARENA</span>
+                            </div>
+                        </div>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-bar"></div>
+                                <div class="progress-glow"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span class="progress-pct" id="progress-pct">0%</span>
+                                <span class="progress-status" id="progress-status">LOADING...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="loading-tips">
+                        <span class="tip-label">TIP:</span>
+                        <span class="tip-text" id="loading-tip">Stars are worth 2x points in battle!</span>
+                    </div>
+
+                    <div class="battle-hint-footer">
+                        <span class="key-hint">ESC</span> to cancel
+                    </div>
+                </div>
+
+                <!-- Battle Screen -->
+                <div id="battle-screen" class="screen">
+                    <div class="battle-header">
+                        <div class="round-indicator">
+                            <div class="round-icons" id="round-icons">
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                                <span class="round-dot"></span>
+                            </div>
+                            <div class="round-text">
+                                <span class="round-label">ROUND</span>
+                                <span class="round-num" id="round-num">1</span>
+                                <span class="round-of">OF 7</span>
+                            </div>
+                        </div>
+                        <div class="battle-category-display">
+                            <div class="category-icon" id="category-icon">⭐</div>
+                            <div class="category-name" id="battle-category">READY</div>
+                        </div>
+                        <div class="battle-timer" id="battle-timer">
+                            <span class="timer-icon">⏱</span>
+                            <span class="timer-value">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="battle-arena">
+                        <div class="fighter-panel left" id="fighter-left">
+                            <div class="panel-effects">
+                                <div class="hit-flash"></div>
+                                <div class="win-glow"></div>
+                            </div>
+                            <div class="fighter-info">
+                                <div class="fighter-portrait-wrapper">
+                                    <img class="fighter-portrait" id="f1-img" src="" alt="">
+                                    <div class="portrait-border"></div>
+                                    <div class="portrait-shine"></div>
+                                    <div class="special-indicator" id="f1-special">
+                                        <span>SPECIAL!</span>
+                                    </div>
+                                </div>
+                                <div class="fighter-details">
+                                    <h3 class="fighter-name" id="f1-name">PLAYER 1</h3>
+                                    <div class="fighter-title" id="f1-title">THE CHALLENGER</div>
+                                </div>
+                            </div>
+                            <div class="fighter-bars">
+                                <div class="bar-row health-row">
+                                    <span class="bar-label">HP</span>
+                                    <div class="health-bar">
+                                        <div class="health-fill" id="f1-health"></div>
+                                        <div class="health-damage" id="f1-damage"></div>
+                                    </div>
+                                    <span class="bar-value" id="f1-hp">100%</span>
+                                </div>
+                                <div class="bar-row energy-row">
+                                    <span class="bar-label">SP</span>
+                                    <div class="energy-bar">
+                                        <div class="energy-fill" id="f1-energy"></div>
+                                    </div>
+                                    <span class="bar-value" id="f1-sp">0%</span>
+                                </div>
+                            </div>
+                            <div class="fighter-score">
+                                <div class="score-wins">
+                                    <span class="wins-label">WINS</span>
+                                    <div class="wins-display">
+                                        <span class="wins-num" id="f1-score">0</span>
+                                    </div>
+                                </div>
+                                <div class="score-rounds" id="f1-rounds">
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="battle-center">
+                            <div class="clash-zone" id="clash-zone">
+                                <div class="clash-effect" id="clash-effect">
+                                    <div class="clash-burst"></div>
+                                    <span class="clash-icon">⚔</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fighter-panel right" id="fighter-right">
+                            <div class="panel-effects">
+                                <div class="hit-flash"></div>
+                                <div class="win-glow"></div>
+                            </div>
+                            <div class="fighter-info">
+                                <div class="fighter-portrait-wrapper">
+                                    <img class="fighter-portrait" id="f2-img" src="" alt="">
+                                    <div class="portrait-border"></div>
+                                    <div class="portrait-shine"></div>
+                                    <div class="special-indicator" id="f2-special">
+                                        <span>SPECIAL!</span>
+                                    </div>
+                                </div>
+                                <div class="fighter-details">
+                                    <h3 class="fighter-name" id="f2-name">PLAYER 2</h3>
+                                    <div class="fighter-title" id="f2-title">THE DEFENDER</div>
+                                </div>
+                            </div>
+                            <div class="fighter-bars">
+                                <div class="bar-row health-row">
+                                    <span class="bar-label">HP</span>
+                                    <div class="health-bar">
+                                        <div class="health-fill" id="f2-health"></div>
+                                        <div class="health-damage" id="f2-damage"></div>
+                                    </div>
+                                    <span class="bar-value" id="f2-hp">100%</span>
+                                </div>
+                                <div class="bar-row energy-row">
+                                    <span class="bar-label">SP</span>
+                                    <div class="energy-bar">
+                                        <div class="energy-fill" id="f2-energy"></div>
+                                    </div>
+                                    <span class="bar-value" id="f2-sp">0%</span>
+                                </div>
+                            </div>
+                            <div class="fighter-score">
+                                <div class="score-wins">
+                                    <span class="wins-label">WINS</span>
+                                    <div class="wins-display">
+                                        <span class="wins-num" id="f2-score">0</span>
+                                    </div>
+                                </div>
+                                <div class="score-rounds" id="f2-rounds">
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                    <span class="round-win"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-comparison" id="stat-comparison">
+                        <div class="comparison-header" id="comparison-header">TOTAL STARS</div>
+                        <div class="comparison-body">
+                            <div class="compare-value left" id="compare-p1">0</div>
+                            <div class="compare-vs">VS</div>
+                            <div class="compare-value right" id="compare-p2">0</div>
+                        </div>
+                        <div class="comparison-result" id="comparison-result"></div>
+                    </div>
+
+                    <div class="battle-log-section">
+                        <div class="log-header">
+                            <span class="log-icon">📜</span>
+                            BATTLE LOG
+                        </div>
+                        <div class="battle-log" id="battle-log"></div>
+                    </div>
+
+                    <div class="combo-display" id="combo-display">
+                        <div class="combo-count"></div>
+                        <div class="combo-label">HIT COMBO!</div>
+                    </div>
+
+                    <div class="critical-hit" id="critical-hit">
+                        <span>CRITICAL HIT!</span>
+                    </div>
+
+                    <div class="battle-hint-footer">
+                        <span class="key-hint">ESC</span> to exit battle
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="results-screen" class="screen">
+                    <div class="results-header">
+                        <div class="result-banner" id="result-banner">
+                            <div class="banner-bg"></div>
+                            <div class="banner-content">
+                                <div class="winner-crown" id="winner-crown">👑</div>
+                                <h1 class="result-title" id="result-title">VICTORY!</h1>
+                                <div class="result-subtitle" id="result-subtitle">FLAWLESS WIN</div>
+                            </div>
+                            <div class="banner-particles"></div>
+                        </div>
+                    </div>
+
+                    <div class="results-podium">
+                        <div class="podium-stage">
+                            <div class="podium-spot loser">
+                                <div class="podium-avatar-wrapper">
+                                    <img class="podium-avatar" id="loser-avatar" src="" alt="">
+                                    <div class="loser-overlay"></div>
+                                </div>
+                                <div class="podium-info">
+                                    <div class="podium-rank">2ND PLACE</div>
+                                    <div class="podium-name" id="loser-name">PLAYER</div>
+                                    <div class="podium-score" id="loser-score">0</div>
+                                </div>
+                                <div class="podium-base second"></div>
+                            </div>
+                            <div class="podium-spot winner">
+                                <div class="winner-effects">
+                                    <div class="winner-rays"></div>
+                                    <div class="winner-sparkles"></div>
+                                </div>
+                                <div class="podium-avatar-wrapper">
+                                    <img class="podium-avatar" id="winner-avatar" src="" alt="">
+                                    <div class="winner-ring"></div>
+                                </div>
+                                <div class="podium-info">
+                                    <div class="podium-rank">CHAMPION</div>
+                                    <div class="podium-name" id="winner-name">CHAMPION</div>
+                                    <div class="podium-score" id="winner-score">0</div>
+                                </div>
+                                <div class="podium-base first"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-stats">
+                        <div class="stats-header">
+                            <span class="stats-icon">📊</span>
+                            BATTLE STATISTICS
+                        </div>
+                        <div class="stats-grid" id="stats-grid"></div>
+                    </div>
+
+                    <div class="xp-gain" id="xp-gain">
+                        <div class="xp-header">EXPERIENCE GAINED</div>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xp-fill"></div>
+                        </div>
+                        <div class="xp-info">
+                            <span class="xp-amount" id="xp-amount">+0 XP</span>
+                            <span class="xp-level" id="xp-level">LEVEL 1</span>
+                        </div>
+                    </div>
+
+                    <div class="share-section">
+                        <div class="share-header">
+                            <span class="share-icon">📢</span>
+                            SHARE YOUR VICTORY
+                        </div>
+                        <div class="share-preview" id="share-preview"></div>
+                        <div class="share-buttons">
+                            <button class="share-btn copy" id="copy-btn">
+                                <span class="btn-icon">📋</span>
+                                <span class="btn-text">COPY</span>
+                                <span class="key-hint-small">[C]</span>
+                            </button>
+                            <button class="share-btn twitter" id="tweet-btn">
+                                <span class="btn-icon">𝕏</span>
+                                <span class="btn-text">POST</span>
+                                <span class="key-hint-small">[T]</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="action-btn rematch" id="rematch-btn">
+                            <span class="btn-icon">🔄</span>
+                            <span class="btn-text">REMATCH</span>
+                            <span class="key-hint-small">[ENTER]</span>
+                        </button>
+                        <button class="action-btn new-game" id="new-game-btn">
+                            <span class="btn-icon">🎮</span>
+                            <span class="btn-text">NEW BATTLE</span>
+                            <span class="key-hint-small">[N]</span>
+                        </button>
+                    </div>
+
+                    <div class="battle-hint-footer">
+                        <span class="key-hint">ESC</span> to go back
+                    </div>
+                </div>
+
+                <!-- Hall of Fame Screen -->
+                <div id="hall-of-fame-screen" class="screen">
+                    <div class="screen-header">
+                        <h2 class="screen-title">
+                            <span class="title-icon">🏆</span>
+                            HALL OF FAME
+                        </h2>
+                        <button class="back-btn" id="hof-back-btn">← BACK</button>
+                    </div>
+                    <div class="hall-of-fame-content">
+                        <div class="hall-grid" id="hall-of-fame">
+                            <div class="hall-empty">No champions yet. Start battling!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements Screen -->
+                <div id="achievements-screen" class="screen">
+                    <div class="screen-header">
+                        <h2 class="screen-title">
+                            <span class="title-icon">🎖</span>
+                            ACHIEVEMENTS
+                        </h2>
+                        <div class="achievement-count" id="achievement-count-header">0/10</div>
+                        <button class="back-btn" id="ach-back-btn">← BACK</button>
+                    </div>
+                    <div class="achievements-content">
+                        <div class="achievements-grid" id="achievements-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Global Leaderboard Screen -->
+                <div id="leaderboard-screen" class="screen">
+                    <div class="screen-header">
+                        <h2 class="screen-title">
+                            <span class="title-icon">🌍</span>
+                            GLOBAL LEADERBOARD
+                        </h2>
+                        <button class="back-btn" id="leaderboard-back-btn">← BACK</button>
+                    </div>
+                    <div class="leaderboard-content">
+                        <!-- Global Stats -->
+                        <div class="global-stats">
+                            <div class="global-stat">
+                                <span class="global-stat-label">Global Players</span>
+                                <span class="global-stat-value" id="global-total-users">---</span>
+                            </div>
+                            <div class="global-stat">
+                                <span class="global-stat-label">Global Battles</span>
+                                <span class="global-stat-value" id="global-total-battles">---</span>
+                            </div>
+                        </div>
+
+                        <div class="leaderboard-info">
+                            <p>Top developers ranked by total wins. Minimum 3 battles required.</p>
+                        </div>
+                        <div id="leaderboard-list" class="leaderboard-list">
+                            <div class="loading-spinner">Loading leaderboard...</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="cabinet-controls">
+            <div class="control-panel">
+                <div class="joystick"></div>
+                <div class="buttons-row">
+                    <div class="arcade-button red"></div>
+                    <div class="arcade-button blue"></div>
+                    <div class="arcade-button yellow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti"></div>
+
+    <!-- Screen Flash -->
+    <div class="screen-flash" id="screen-flash"></div>
+
+    <!-- Load as ES Module -->
+    <script type="module">
+        // Import all modules
+        import { ACHIEVEMENTS, RANKS, BATTLE_CATEGORIES, LOADING_TIPS, ANNOUNCER_PHRASES, FAMOUS_DEVS } from './js/constants.js';
+        import { $, switchScreen, checkURLParams, updateURL } from './js/utils.js';
+        import { checkAPIStatus } from './js/api.js';
+        import { UsageLogger } from './js/logger.js';
+        import {
+            initParticles,
+            resizeCanvas,
+            startParticles,
+            createStars,
+            startVHSTimer,
+            initAudio,
+            playSound
+        } from './js/ui.js';
+
+        // Make key functions globally available for inline handlers
+        window.switchScreen = (name) => switchScreen(name, screens);
+        window.ACHIEVEMENTS = ACHIEVEMENTS;
+        window.UsageLogger = UsageLogger;
+
+        // Initialize screens
+        const screens = {
+            'title-screen': $('title-screen'),
+            'loading-screen': $('loading-screen'),
+            'battle-screen': $('battle-screen'),
+            'results-screen': $('results-screen'),
+            'hall-of-fame-screen': $('hall-of-fame-screen'),
+            'achievements-screen': $('achievements-screen')
+        };
+
+        // Initialize app
+        function init() {
+            UsageLogger.init();
+            checkAPIStatus();
+            createStars();
+            initParticles();
+            resizeCanvas();
+            startParticles();
+            startVHSTimer();
+            initAudio();
+            checkURLParams();
+        }
+
+        // Start when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+
+    <!-- Legacy app.js for remaining functionality -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

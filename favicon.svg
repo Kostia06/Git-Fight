@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff2a6d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#05d9e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="stickGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff2a6d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b9d;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="baseGradient">
+      <stop offset="0%" style="stop-color:#1a0a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d0221;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100" height="100" rx="20" fill="#0d0221"/>
+
+  <!-- Retro grid pattern -->
+  <g opacity="0.15">
+    <line x1="0" y1="20" x2="100" y2="20" stroke="#05d9e8" stroke-width="0.5"/>
+    <line x1="0" y1="40" x2="100" y2="40" stroke="#05d9e8" stroke-width="0.5"/>
+    <line x1="0" y1="60" x2="100" y2="60" stroke="#05d9e8" stroke-width="0.5"/>
+    <line x1="0" y1="80" x2="100" y2="80" stroke="#05d9e8" stroke-width="0.5"/>
+    <line x1="20" y1="0" x2="20" y2="100" stroke="#ff2a6d" stroke-width="0.5"/>
+    <line x1="40" y1="0" x2="40" y2="100" stroke="#ff2a6d" stroke-width="0.5"/>
+    <line x1="60" y1="0" x2="60" y2="100" stroke="#ff2a6d" stroke-width="0.5"/>
+    <line x1="80" y1="0" x2="80" y2="100" stroke="#ff2a6d" stroke-width="0.5"/>
+  </g>
+
+  <!-- Joystick base (console panel) -->
+  <g filter="url(#glow)">
+    <!-- Base plate -->
+    <rect x="20" y="55" width="60" height="30" rx="4" fill="url(#baseGradient)"
+          stroke="url(#gradient1)" stroke-width="2"/>
+
+    <!-- Base inner detail -->
+    <rect x="25" y="60" width="50" height="20" rx="2" fill="none"
+          stroke="#05d9e8" stroke-width="1" opacity="0.5"/>
+
+    <!-- Joystick stick base -->
+    <ellipse cx="50" cy="55" rx="12" ry="6" fill="#1a0a2e"
+             stroke="url(#gradient1)" stroke-width="2"/>
+
+    <!-- Joystick stick -->
+    <rect x="45" y="30" width="10" height="28" rx="5" fill="url(#stickGradient)"
+          stroke="#ff6b9d" stroke-width="1.5"/>
+
+    <!-- Joystick ball/top -->
+    <circle cx="50" cy="28" r="10" fill="url(#gradient1)"
+            stroke="#05d9e8" stroke-width="2"/>
+
+    <!-- Ball highlight -->
+    <circle cx="47" cy="25" r="3" fill="#ffffff" opacity="0.6"/>
+  </g>
+
+  <!-- Action buttons -->
+  <g filter="url(#glow)">
+    <!-- Button 1 -->
+    <circle cx="68" cy="68" r="5" fill="#ff2a6d" stroke="#ff6b9d" stroke-width="1.5"/>
+    <circle cx="68" cy="68" r="2" fill="#ff6b9d" opacity="0.8"/>
+
+    <!-- Button 2 -->
+    <circle cx="82" cy="68" r="5" fill="#05d9e8" stroke="#6feaff" stroke-width="1.5"/>
+    <circle cx="82" cy="68" r="2" fill="#6feaff" opacity="0.8"/>
+
+    <!-- Button 3 -->
+    <circle cx="75" cy="77" r="4" fill="#39ff14" stroke="#7fff57" stroke-width="1.5"/>
+    <circle cx="75" cy="77" r="1.5" fill="#7fff57" opacity="0.8"/>
+  </g>
+
+  <!-- Corner accents -->
+  <g opacity="0.6">
+    <line x1="15" y1="15" x2="22" y2="15" stroke="#ffe66d" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="15" x2="15" y2="22" stroke="#ffe66d" stroke-width="2" stroke-linecap="round"/>
+
+    <line x1="78" y1="15" x2="85" y2="15" stroke="#39ff14" stroke-width="2" stroke-linecap="round"/>
+    <line x1="85" y1="15" x2="85" y2="22" stroke="#39ff14" stroke-width="2" stroke-linecap="round"/>
+
+    <line x1="15" y1="85" x2="22" y2="85" stroke="#ff2a6d" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="78" x2="15" y2="85" stroke="#ff2a6d" stroke-width="2" stroke-linecap="round"/>
+
+    <line x1="78" y1="85" x2="85" y2="85" stroke="#05d9e8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="85" y1="78" x2="85" y2="85" stroke="#05d9e8" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
