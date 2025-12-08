@@ -857,14 +857,14 @@ body {
     border-left: 2px solid var(--neon-blue);
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
     z-index: 1500;
-    transform: translateX(300%);
+    transform: translateX(100%);
     transition: transform 0.3s ease-out;
     display: flex;
     flex-direction: column;
 }
 
 .settings-panel.open {
-    transform: translateX(50%);
+    transform: translateX(0);
 }
 
 .settings-header {
