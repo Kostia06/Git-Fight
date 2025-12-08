@@ -864,7 +864,7 @@ body {
 }
 
 .settings-panel.open {
-    transform: translateX(0);
+    transform: translateX(50%);
 }
 
 .settings-header {
