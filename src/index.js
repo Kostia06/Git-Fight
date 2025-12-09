@@ -407,8 +407,8 @@ function init() {
 }
 
 function setupEventListeners() {
-    // Fight button
-    $('fight-btn').addEventListener('click', startBattle);
+    // VS Battle button
+    $('vs-battle-btn').addEventListener('click', startBattle);
 
     // Player inputs
     $('player1').addEventListener('keypress', (e) => {
@@ -441,42 +441,8 @@ function setupEventListeners() {
     // Game mode selector
     const playerSelect = document.querySelector('.player-select');
 
-    // Create particle burst for mode switching
-    function createModeSwitchParticles() {
-        if (!settings.particles) return;
-        
-        const activeBtn = document.querySelector('.mode-btn.active');
-        if (!activeBtn) return;
-        
-        const rect = activeBtn.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        // Create particle burst
-        for (let i = 0; i < 8; i++) {
-            const particle = {
-                x: centerX,
-                y: centerY,
-                vx: (Math.random() - 0.5) * 6,
-                vy: (Math.random() - 0.5) * 6 - 2,
-                size: Math.random() * 2 + 1,
-                color: currentMode === 'random' ? '#39ff14' : '#05d9e8',
-                alpha: 1,
-                life: 1
-            };
-            
-            particles.push(particle);
-        }
-    }
-
     $$('.mode-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            // Prevent multiple clicks during animation
-            if (btn.classList.contains('animating')) return;
-            
-            // Add animating class to all mode buttons
-            $$('.mode-btn').forEach(b => b.classList.add('animating'));
-            
             // Update active state
             $$('.mode-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -484,25 +450,13 @@ function setupEventListeners() {
             // Get mode
             currentMode = btn.dataset.mode;
 
-            // Create particle effect
-            createModeSwitchParticles();
-
-            // Update UI with delay for animation
-            setTimeout(() => {
-                if (currentMode === 'random') {
-                    playerSelect.classList.add('random-mode');
-                    $('player2').value = ''; // Clear P2 input
-                    
-                    // Show random mode notification
-                    showAnnouncer('RANDOM MODE ACTIVATED!', 1000);
-                } else {
-                    playerSelect.classList.remove('random-mode');
-                    showAnnouncer('1V1 MODE SELECTED', 1000);
-                }
-                
-                // Remove animating class after animation completes
-                $$('.mode-btn').forEach(b => b.classList.remove('animating'));
-            }, 200);
+            // Update UI
+            if (currentMode === 'random') {
+                playerSelect.classList.add('random-mode');
+                $('player2').value = ''; // Clear P2 input
+            } else {
+                playerSelect.classList.remove('random-mode');
+            }
         });
     });
 
@@ -1732,15 +1686,6 @@ function showResults() {
 
     // Stats breakdown
     renderStatsGrid();
-
-    // XP animation
-    const xpGain = isTie ? 25 : 50 + (winnerScore * 10) + (stats.currentStreak * 20);
-    $('xp-amount').textContent = `+${xpGain} XP`;
-    $('xp-level').textContent = `LEVEL ${stats.level}`;
-
-    setTimeout(() => {
-        $('xp-fill').style.width = `${(stats.xp % (stats.level * 200)) / (stats.level * 200) * 100}%`;
-    }, 500);
 
     // Share text
     const shareText = isTie
