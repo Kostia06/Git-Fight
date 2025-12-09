@@ -848,22 +848,24 @@ body {
 }
 
 .settings-panel {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
-    width: min(300px, 85vw);
+    width: min(280px, 70%);
     height: 100%;
     background: linear-gradient(180deg, var(--bg-purple), var(--bg-deep));
     border-left: 2px solid var(--neon-blue);
+    border-radius: 0 8px 8px 0;
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
     z-index: 1500;
-    transform: translateX(calc(100% + 10px));
+    transform: translateX(100%);
     transition: transform 0.3s ease-out, visibility 0s 0.3s, opacity 0.3s ease-out;
     display: flex;
     flex-direction: column;
     visibility: hidden;
     pointer-events: none;
     opacity: 0;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
