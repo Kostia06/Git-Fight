@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compact Random Button Test</title>
+    <style>
+        body { 
+            background: #1a1a1a; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 50px;
+            gap: 30px;
+        }
+        
+        .test-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background: #222;
+            position: relative;
+        }
+        
+        .vs-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 0;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            transform: scale(0.85);
+        }
+        
+        .vs-section::before,
+        .vs-section::after {
+            display: none;
+        }
+        
+        .vs-container {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .vs-electricity {
+            display: none;
+        }
+        
+        .vs-sparks {
+            display: none;
+        }
+        
+        .vs-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #b537f2, #ff2a6d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px #b537f2;
+            animation: diceRoll 2s ease-in-out infinite;
+        }
+        
+        .vs-text {
+            font-size: 1.2rem;
+            animation: diceBounce 1.5s ease-in-out infinite;
+        }
+        
+        .vs-hint-compact {
+            margin-top: 4px;
+            font-size: 0.6rem;
+        }
+        
+        .vs-hint-compact .key-hint {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.55rem;
+        }
+        
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(45deg) scale(1.02); }
+            50% { transform: rotate(90deg) scale(1); }
+            75% { transform: rotate(135deg) scale(1.02); }
+        }
+        
+        @keyframes diceBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        
+        .vs-section:hover .vs-badge {
+            box-shadow: 0 0 15px #b537f2, 0 0 20px rgba(181, 55, 242, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .random-mode-active {
+            position: relative;
+        }
+        
+        .random-mode-active::before {
+            content: '🎲 RANDOM';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #b537f2, #ff2a6d);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            animation: randomModePulse 2s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        @keyframes randomModePulse {
+            0%, 100% {
+                opacity: 0.7;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translateX(-50%) scale(1.02);
+            }
+        }
+        
+        .size-info {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        h2 { 
+            color: #b537f2; 
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .features {
+            text-align: left;
+            font-size: 0.8rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        .features li {
+            margin: 5px 0;
+        }
+        
+        .comparison {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎲 Compact Random Button Design</h1>
+    
+    <div class="test-container random-mode-active">
+        <h2>Final Compact Design</h2>
+        <button class="vs-section">
+            <div class="vs-container">
+                <div class="vs-badge">
+                    <span class="vs-text">🎲</span>
+                </div>
+            </div>
+            <div class="vs-hint-compact">
+                <span class="key-hint">START</span>
+            </div>
+        </button>
+        <div class="size-info">
+            <strong>Features:</strong>
+            <ul class="features">
+                <li>✅ No flashing arrow triangles</li>
+                <li>✅ Minimal bottom gap (4px margin)</li>
+                <li>✅ Compact 40px × 40px badge</li>
+                <li>✅ Subtle animations</li>
+                <li>✅ Clean, minimal design</li>
+                <li>✅ Small "START" hint</li>
+                <li>✅ Random mode indicator above</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="comparison">
+        <div class="test-container">
+            <h2>Regular VS Button</h2>
+            <button class="vs-section" style="transform: scale(1);">
+                <div class="vs-container">
+                    <div class="vs-badge" style="background: linear-gradient(135deg, #ff6b35, #ffd700); width: 45px; height: 45px;">
+                        <span class="vs-text" style="font-size: 0.85rem; color: #0d0221;">VS</span>
+                    </div>
+                </div>
+                <div class="vs-hint-compact">
+                    <span class="key-hint">ENTER</span>
+                </div>
+            </button>
+        </div>
+        
+        <div style="font-size: 2rem;">→</div>
+        
+        <div class="test-container">
+            <h2>Compact Random</h2>
+            <button class="vs-section">
+                <div class="vs-container">
+                    <div class="vs-badge">
+                        <span class="vs-text">🎲</span>
+                    </div>
+                </div>
+                <div class="vs-hint-compact">
+                    <span class="key-hint">START</span>
+                </div>
+            </button>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; text-align: center; color: #888; max-width: 600px;">
+        <p>The compact random button is now much cleaner with:</p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>No more flashing arrow triangles on the sides</li>
+            <li>Minimal gap at the bottom (reduced from ~15px to 4px)</li>
+            <li>Smaller overall footprint while remaining clickable</li>
+            <li>Clean, minimal appearance that fits better in the UI</li>
+        </ul>
+    </div>
+</body>
+</html>

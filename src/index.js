@@ -409,6 +409,9 @@ function init() {
 function setupEventListeners() {
     // VS Battle button
     $('vs-battle-btn').addEventListener('click', startBattle);
+    
+    // Random Start button
+    $('random-start-btn').addEventListener('click', startBattle);
 
     // Player inputs
     $('player1').addEventListener('keypress', (e) => {
@@ -453,9 +456,11 @@ function setupEventListeners() {
             // Update UI
             if (currentMode === 'random') {
                 playerSelect.classList.add('random-mode');
+                playerSelect.classList.add('random-mode-active');
                 $('player2').value = ''; // Clear P2 input
             } else {
                 playerSelect.classList.remove('random-mode');
+                playerSelect.classList.remove('random-mode-active');
             }
         });
     });
@@ -579,8 +584,12 @@ function setupEventListeners() {
                 $('settings-panel').classList.toggle('open');
                 e.preventDefault();
             } else if (e.key === 'y' || e.key === 'Y') {
-                const vsRandomBtn = $('vs-random-btn');
-                if (vsRandomBtn) vsRandomBtn.click();
+                const randomStartBtn = $('random-start-btn');
+                if (randomStartBtn && randomStartBtn.style.display !== 'none') {
+                    randomStartBtn.click();
+                } else if (currentMode === 'random') {
+                    startBattle();
+                }
                 e.preventDefault();
             } else if (e.key === 'Tab') {
                 if (document.activeElement === $('player1')) {

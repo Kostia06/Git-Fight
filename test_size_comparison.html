@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Button Size Test</title>
+    <style>
+        body { 
+            background: #1a1a1a; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 50px;
+            gap: 30px;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background: #222;
+        }
+        
+        .vs-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 0;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .vs-badge {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #b537f2, #ff2a6d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px #b537f2;
+            animation: diceRoll 2s ease-in-out infinite;
+        }
+        
+        .vs-text {
+            font-size: 1.4rem;
+            animation: diceBounce 1.5s ease-in-out infinite;
+        }
+        
+        .vs-hint {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: #ccc;
+        }
+        
+        .key-hint {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(60deg) scale(1.03); }
+            50% { transform: rotate(120deg) scale(1); }
+            75% { transform: rotate(180deg) scale(1.03); }
+        }
+        
+        @keyframes diceBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        
+        .vs-section:hover .vs-badge {
+            box-shadow: 0 0 20px #b537f2, 0 0 30px rgba(181, 55, 242, 0.5);
+            transform: scale(1.08);
+        }
+        
+        .size-info {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+        }
+        
+        h2 { color: #b537f2; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🎲 Random Button Size Comparison</h1>
+    
+    <div class="button-container">
+        <h2>Current Size (50px badge)</h2>
+        <button class="vs-section">
+            <div class="vs-badge">
+                <span class="vs-text">🎲</span>
+            </div>
+            <div class="vs-hint">
+                <span class="key-hint">START BATTLE</span>
+            </div>
+        </button>
+        <div class="size-info">
+            Badge: 50px × 50px<br>
+            Icon: 1.4rem<br>
+            Scale: 0.9<br>
+            This is the current "bit bigger" size
+        </div>
+    </div>
+    
+    <div class="button-container">
+        <h2>Smaller Reference (35px badge)</h2>
+        <button class="vs-section">
+            <div class="vs-badge" style="width: 35px; height: 35px;">
+                <span class="vs-text" style="font-size: 1.0rem;">🎲</span>
+            </div>
+            <div class="vs-hint">
+                <span class="key-hint">START</span>
+            </div>
+        </button>
+        <div class="size-info">
+            Badge: 35px × 35px<br>
+            Icon: 1.0rem<br>
+            Scale: 0.8<br>
+            This was the "very small" size
+        </div>
+    </div>
+    
+    <div class="button-container">
+        <h2>Regular VS Button Reference (45px badge)</h2>
+        <button class="vs-section">
+            <div class="vs-badge" style="background: linear-gradient(135deg, #ff6b35, #ffd700); width: 45px; height: 45px;">
+                <span class="vs-text" style="font-size: 0.85rem; color: #0d0221;">VS</span>
+            </div>
+            <div class="vs-hint">
+                <span class="key-hint">ENTER</span>
+            </div>
+        </button>
+        <div class="size-info">
+            Badge: 45px × 45px<br>
+            Icon: 0.85rem<br>
+            Scale: 1.0<br>
+            This is the regular VS button size
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; text-align: center; color: #888;">
+        <p>The current random button (50px) is slightly larger than the very small version (35px)<br>
+        but still noticeably smaller than the original large version (120px) and the regular VS button (45px).</p>
+        <p>It should now be a good "bit bigger" size that's still compact but easily clickable!</p>
+    </div>
+</body>
+</html>

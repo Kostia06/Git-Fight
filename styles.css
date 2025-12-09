@@ -1312,6 +1312,160 @@ body {
 .player-select.random-mode .player-card.p1 {
     justify-self: center;
     margin: 0 auto;
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 20px rgba(181, 55, 242, 0.4);
+}
+
+/* Hide random start button by default */
+.vs-section.random-start-btn {
+    display: none;
+    padding: 2px 0;
+    transform: scale(0.85);
+}
+
+/* Remove triangles/arrows from random button */
+.vs-section.random-start-btn::before,
+.vs-section.random-start-btn::after {
+    display: none;
+}
+
+/* Compact container for random button */
+.vs-section.random-start-btn .vs-container {
+    padding: 0;
+    margin: 0;
+}
+
+/* Remove electricity effects */
+.vs-section.random-start-btn .vs-electricity {
+    display: none;
+}
+
+/* Remove sparks */
+.vs-section.random-start-btn .vs-sparks {
+    display: none;
+}
+
+/* Compact hint for random button */
+.vs-section.random-start-btn .vs-hint-compact {
+    margin-top: 4px;
+    font-size: 0.6rem;
+}
+
+.vs-section.random-start-btn .vs-hint-compact .key-hint {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.55rem;
+}
+
+/* Hide regular VS button in random mode */
+.player-select.random-mode .vs-section:not(.random-start-btn) {
+    display: none;
+}
+
+/* Show random start button only in random mode */
+.player-select.random-mode .vs-section.random-start-btn {
+    display: flex;
+    animation: randomButtonAppear 0.3s ease-out;
+    margin: 0;
+    padding: 2px 0;
+}
+
+@keyframes randomButtonAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(0.9);
+    }
+}
+
+.player-select.random-mode .vs-section {
+    display: none;
+}
+
+.player-select.random-mode .vs-section.random-start-btn {
+    display: flex;
+}
+
+.vs-section.random-start-btn .vs-badge {
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    box-shadow: var(--glow-purple);
+    animation: diceRoll 2s ease-in-out infinite;
+    width: 40px;
+    height: 40px;
+    min-width: auto;
+    min-height: auto;
+}
+
+.vs-section.random-start-btn:hover .vs-badge {
+    box-shadow: var(--glow-purple), 0 0 15px rgba(181, 55, 242, 0.4);
+    transform: scale(1.05);
+}
+
+.vs-section.random-start-btn .vs-text {
+    font-size: 1.2rem;
+    animation: diceBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes diceRoll {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(45deg) scale(1.02);
+    }
+    50% {
+        transform: rotate(90deg) scale(1);
+    }
+    75% {
+        transform: rotate(135deg) scale(1.02);
+    }
+}
+
+@keyframes diceBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Random mode indicator */
+.random-mode-active {
+    position: relative;
+}
+
+.random-mode-active::before {
+    content: '🎲 RANDOM';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    animation: randomModePulse 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes randomModePulse {
+    0%, 100% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translateX(-50%) scale(1.02);
+    }
 }
 
 .player-card {
@@ -1503,20 +1657,24 @@ body {
     opacity: 1;
 }
 
+
 .avatar-ring {
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-radius: 50%;
     border: 3px solid;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
     z-index: 2;
     box-sizing: border-box;
 }
+
+
+
 
 .avatar-img.loaded ~ .avatar-ring {
     opacity: 1;
@@ -5271,6 +5429,8 @@ body {
     .avatar-ring {
         width: 45px;
         height: 45px;
+        transform: scale(2);
+        inset: 20px;
     }
 
     .input-wrapper {

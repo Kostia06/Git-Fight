@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Mode Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: white; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #333; border-radius: 5px; }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .info { color: #00ffff; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .mode-btn { background: #333; color: white; border: 1px solid #666; }
+        .mode-btn.active { background: #0066cc; }
+        .vs-section { background: #444; color: white; border: 2px solid #666; padding: 15px; margin: 10px 0; }
+        .random-start-btn { background: purple; border-color: #ff00ff; }
+        .hidden { display: none; }
+        
+        /* Simulate the actual CSS behavior */
+        .player-select.random-mode .vs-section:not(.random-start-btn) { display: none; }
+        .player-select.random-mode .vs-section.random-start-btn { display: block; }
+        .vs-section.random-start-btn { display: none; }
+    </style>
+</head>
+<body>
+    <h1>🎲 Random Mode Button Test</h1>
+    
+    <div class="test-section">
+        <h3>Mode Selection</h3>
+        <button class="mode-btn active" data-mode="1v1">1v1 Mode</button>
+        <button class="mode-btn" data-mode="random">🎲 Random Mode</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>Battle Buttons</h3>
+        <div class="player-select" id="player-select">
+            <button class="vs-section" id="vs-battle-btn">⚔️ VS BATTLE</button>
+            <button class="vs-section random-start-btn" id="random-start-btn">🎲 START RANDOM BATTLE</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test Results</h3>
+        <div id="test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions</h3>
+        <ol>
+            <li>Click "🎲 Random Mode" button above</li>
+            <li>Check if the VS Battle button disappears and Random button appears</li>
+            <li>Click "1v1 Mode" to switch back</li>
+            <li>Verify the buttons switch correctly</li>
+        </ol>
+    </div>
+
+    <script>
+        const results = document.getElementById('test-results');
+        const playerSelect = document.getElementById('player-select');
+        const vsBattleBtn = document.getElementById('vs-battle-btn');
+        const randomStartBtn = document.getElementById('random-start-btn');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            results.appendChild(div);
+        }
+        
+        function checkButtonStates() {
+            const vsDisplay = window.getComputedStyle(vsBattleBtn).display;
+            const randomDisplay = window.getComputedStyle(randomStartBtn).display;
+            const hasRandomClass = playerSelect.classList.contains('random-mode');
+            
+            log(`Current state:`, 'info');
+            log(`- Player select has 'random-mode' class: ${hasRandomClass ? '✅' : '❌'}`, hasRandomClass ? 'success' : 'error');
+            log(`- VS Battle button display: ${vsDisplay}`, vsDisplay === 'none' ? 'success' : 'error');
+            log(`- Random Start button display: ${randomDisplay}`, randomDisplay !== 'none' ? 'success' : 'error');
+        }
+        
+        // Initial state check
+        log('=== Initial State Check ===', 'info');
+        checkButtonStates();
+        
+        // Mode button event listeners
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const mode = btn.dataset.mode;
+                log(`=== Mode switched to: ${mode} ===`, 'info');
+                
+                if (mode === 'random') {
+                    playerSelect.classList.add('random-mode');
+                    log('Added random-mode class to player-select', 'success');
+                } else {
+                    playerSelect.classList.remove('random-mode');
+                    log('Removed random-mode class from player-select', 'success');
+                }
+                
+                // Check state after a short delay
+                setTimeout(() => {
+                    checkButtonStates();
+                }, 100);
+            });
+        });
+        
+        // Button click tests
+        vsBattleBtn.addEventListener('click', () => {
+            log('VS Battle button clicked! ⚔️', 'success');
+        });
+        
+        randomStartBtn.addEventListener('click', () => {
+            log('Random Start button clicked! 🎲', 'success');
+        });
+        
+        log('=== Test Ready ===', 'info');
+        log('Click the mode buttons above to test the functionality!', 'info');
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Random Mode Button</title>
+    <style>
+        .player-select { display: flex; gap: 20px; padding: 20px; }
+        .vs-section { padding: 10px 20px; background: #333; color: white; border: none; cursor: pointer; }
+        .random-start-btn { background: purple; }
+        .player-select.random-mode .vs-section { display: none; }
+        .player-select.random-mode .vs-section.random-start-btn { display: flex; }
+        .mode-btn { padding: 5px 10px; margin: 5px; }
+        .mode-btn.active { background: blue; color: white; }
+    </style>
+</head>
+<body>
+    <div class="mode-selector">
+        <button class="mode-btn active" data-mode="1v1">1v1</button>
+        <button class="mode-btn" data-mode="random">1v🎲</button>
+    </div>
+    
+    <div class="player-select">
+        <button class="vs-section" id="vs-battle-btn">VS BATTLE</button>
+        <button class="vs-section random-start-btn" id="random-start-btn" style="display: none;">🎲 START RANDOM</button>
+    </div>
+    
+    <div id="status">Current mode: 1v1</div>
+    
+    <script>
+        const playerSelect = document.querySelector('.player-select');
+        const status = document.getElementById('status');
+        
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const mode = btn.dataset.mode;
+                status.textContent = `Current mode: ${mode}`;
+                
+                if (mode === 'random') {
+                    playerSelect.classList.add('random-mode');
+                    console.log('Random mode activated - should show random button');
+                } else {
+                    playerSelect.classList.remove('random-mode');
+                    console.log('1v1 mode activated - should show VS button');
+                }
+            });
+        });
+        
+        // Test button clicks
+        document.getElementById('vs-battle-btn').addEventListener('click', () => {
+            console.log('VS Battle button clicked');
+        });
+        
+        document.getElementById('random-start-btn').addEventListener('click', () => {
+            console.log('Random Start button clicked');
+        });
+    </script>
+</body>
+</html>
