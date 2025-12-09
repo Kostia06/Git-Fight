@@ -7,7 +7,7 @@
 // IMPORTS
 // ============================================
 
-import { saveBattle, loadLeaderboard, loadStats, updateLeaderboardUI, updateGlobalStatsUI } from './js/database.js';
+import { saveBattle, loadLeaderboard, loadStats, updateLeaderboardUI, updateGlobalStatsUI } from './database.js';
 
 // ============================================
 // CONSTANTS & CONFIG
@@ -77,9 +77,25 @@ const ANNOUNCER_PHRASES = {
 };
 
 const FAMOUS_DEVS = [
-    'torvalds', 'gaearon', 'sindresorhus', 'tj', 'yyx990803',
-    'addyosmani', 'paulirish', 'fat', 'mdo', 'defunkt',
-    'mojombo', 'wycats', 'dhh', 'jeresig', 'fabpot'
+  "torvalds",
+  "gvanrossum",
+  "mojombo",
+  "defunkt",
+  "pjhyett",
+  "schacon",
+  "antirez",
+  "dhh",
+  "yyx990803",
+  "addyosmani",
+  "rauchg",
+  "kentcdodds",
+  "tj",
+  "geohot",
+  "djangofan",  
+  "peng‑zhihui",
+  "ruanyf",
+  "bradtraversy",
+  "Kostia06"
 ];
 
 // ============================================
@@ -422,6 +438,74 @@ function setupEventListeners() {
         }
     });
 
+    // Game mode selector
+    const playerSelect = document.querySelector('.player-select');
+
+    // Create particle burst for mode switching
+    function createModeSwitchParticles() {
+        if (!settings.particles) return;
+        
+        const activeBtn = document.querySelector('.mode-btn.active');
+        if (!activeBtn) return;
+        
+        const rect = activeBtn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Create particle burst
+        for (let i = 0; i < 8; i++) {
+            const particle = {
+                x: centerX,
+                y: centerY,
+                vx: (Math.random() - 0.5) * 6,
+                vy: (Math.random() - 0.5) * 6 - 2,
+                size: Math.random() * 2 + 1,
+                color: currentMode === 'random' ? '#39ff14' : '#05d9e8',
+                alpha: 1,
+                life: 1
+            };
+            
+            particles.push(particle);
+        }
+    }
+
+    $$('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Prevent multiple clicks during animation
+            if (btn.classList.contains('animating')) return;
+            
+            // Add animating class to all mode buttons
+            $$('.mode-btn').forEach(b => b.classList.add('animating'));
+            
+            // Update active state
+            $$('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Get mode
+            currentMode = btn.dataset.mode;
+
+            // Create particle effect
+            createModeSwitchParticles();
+
+            // Update UI with delay for animation
+            setTimeout(() => {
+                if (currentMode === 'random') {
+                    playerSelect.classList.add('random-mode');
+                    $('player2').value = ''; // Clear P2 input
+                    
+                    // Show random mode notification
+                    showAnnouncer('RANDOM MODE ACTIVATED!', 1000);
+                } else {
+                    playerSelect.classList.remove('random-mode');
+                    showAnnouncer('1V1 MODE SELECTED', 1000);
+                }
+                
+                // Remove animating class after animation completes
+                $$('.mode-btn').forEach(b => b.classList.remove('animating'));
+            }, 200);
+        });
+    });
+
     // Settings
     $('settings-btn').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -526,11 +610,7 @@ function setupEventListeners() {
                     startBattle();
                     e.preventDefault();
                 }
-            } else if (e.key === 'r' || e.key === 'R') {
-                const randomBtn = $('random-btn');
-                if (randomBtn) randomBtn.click();
-                e.preventDefault();
-            } else if (e.key === 'h' || e.key === 'H') {
+            }  else if (e.key === 'h' || e.key === 'H') {
                 switchScreen('hall-of-fame-screen');
                 e.preventDefault();
             } else if (e.key === 'a' || e.key === 'A') {
@@ -543,6 +623,10 @@ function setupEventListeners() {
                 e.preventDefault();
             } else if (e.key === 's' || e.key === 'S') {
                 $('settings-panel').classList.toggle('open');
+                e.preventDefault();
+            } else if (e.key === 'y' || e.key === 'Y') {
+                const vsRandomBtn = $('vs-random-btn');
+                if (vsRandomBtn) vsRandomBtn.click();
                 e.preventDefault();
             } else if (e.key === 'Tab') {
                 if (document.activeElement === $('player1')) {
@@ -1138,19 +1222,55 @@ function updateURL(p1, p2) {
 // BATTLE FLOW
 // ============================================
 
-function randomMatch() {
-    const shuffled = [...FAMOUS_DEVS].sort(() => Math.random() - 0.5);
-    $('player1').value = shuffled[0];
-    $('player2').value = shuffled[1];
-    triggerGlitch();
-    startBattle();
+let currentMode = '1v1'; // Game mode: '1v1' or 'random'
+
+
+function youVsRandom() {
+    // Get random developer
+    const randomDev = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
+
+    // Check if either input already has a value
+    const p1 = $('player1').value.trim();
+    const p2 = $('player2').value.trim();
+
+    if (p1 && !p2) {
+        // User already entered P1, fill P2 with random
+        $('player2').value = randomDev;
+        triggerGlitch();
+        startBattle();
+    } else if (p2 && !p1) {
+        // User already entered P2, fill P1 with random
+        $('player1').value = randomDev;
+        triggerGlitch();
+        startBattle();
+    } else {
+        // No input yet, prompt for username
+        const username = prompt('Enter your GitHub username:');
+        if (username && username.trim()) {
+            $('player1').value = username.trim();
+            $('player2').value = randomDev;
+            triggerGlitch();
+            startBattle();
+        }
+    }
 }
 
 async function startBattle() {
-    const p1Name = $('player1').value.trim();
-    const p2Name = $('player2').value.trim();
+    let p1Name = $('player1').value.trim();
+    let p2Name = $('player2').value.trim();
 
-    if (!p1Name || !p2Name) {
+    // Auto-fill P2 with random developer if in random mode
+    if (currentMode === 'random' && p1Name && !p2Name) {
+        p2Name = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
+        $('player2').value = p2Name;
+    }
+
+    if (!p1Name) {
+        showError(currentMode === 'random' ? 'Enter your username!' : 'Enter both usernames!');
+        return;
+    }
+
+    if (!p2Name) {
         showError('Enter both usernames!');
         return;
     }

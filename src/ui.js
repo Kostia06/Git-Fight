@@ -53,7 +53,7 @@ function animateParticles() {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 10, canvas.width, canvas.height);
 
     particles.forEach(p => {
         ctx.fillStyle = `rgba(5, 217, 232, ${p.size / 3})`;

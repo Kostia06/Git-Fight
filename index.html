@@ -162,6 +162,17 @@
                         <span class="blink-text">► INSERT FIGHTERS TO BEGIN ◄</span>
                     </div>
 
+                    <div class="game-mode-selector">
+                        <button class="mode-btn active" id="mode-1v1" data-mode="1v1">
+                            <span class="mode-icon">⚔️</span>
+                            <span class="mode-label">1v1</span>
+                        </button>
+                        <button class="mode-btn" id="mode-random" data-mode="random">
+                            <span class="mode-icon">🎲</span>
+                            <span class="mode-label">1vsRANDOM</span>
+                        </button>
+                    </div>
+
                     <div class="player-select">
                         <div class="player-card p1">
                             <div class="card-glow"></div>
@@ -317,11 +328,6 @@
                                 <span class="quick-icon">⚛</span>
                                 <span class="quick-label">FRAMEWORKS</span>
                                 <span class="key-hint-tiny">3</span>
-                            </button>
-                            <button class="quick-btn random-btn" id="random-btn">
-                                <span class="quick-icon">🎲</span>
-                                <span class="quick-label">RANDOM</span>
-                                <span class="key-hint-tiny">R</span>
                             </button>
                         </div>
                     </div>
@@ -824,10 +830,10 @@
     <!-- Load as ES Module -->
     <script type="module">
         // Import all modules
-        import { ACHIEVEMENTS, RANKS, BATTLE_CATEGORIES, LOADING_TIPS, ANNOUNCER_PHRASES, FAMOUS_DEVS } from './js/constants.js';
-        import { $, switchScreen, checkURLParams, updateURL } from './js/utils.js';
-        import { checkAPIStatus } from './js/api.js';
-        import { UsageLogger } from './js/logger.js';
+        import { ACHIEVEMENTS, RANKS, BATTLE_CATEGORIES, LOADING_TIPS, ANNOUNCER_PHRASES, FAMOUS_DEVS } from './src/constants.js';
+        import { $, switchScreen, checkURLParams, updateURL } from './src/utils.js';
+        import { checkAPIStatus } from './src/api.js';
+        import { UsageLogger } from './src/logger.js';
         import {
             initParticles,
             resizeCanvas,
@@ -836,7 +842,7 @@
             startVHSTimer,
             initAudio,
             playSound
-        } from './js/ui.js';
+        } from './src/ui.js';
 
         // Make key functions globally available for inline handlers
         window.switchScreen = (name) => switchScreen(name, screens);
@@ -875,6 +881,6 @@
     </script>
 
     <!-- Legacy app.js for remaining functionality -->
-    <script type="module" src="app.js"></script>
+    <script type="module" src="/src/index.js"></script>
 </body>
 </html>
