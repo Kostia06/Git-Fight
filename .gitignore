@@ -72,6 +72,8 @@ out/
 tmp/
 temp/
 
+test_*
+
 # Optional npm cache directory
 .npm
 

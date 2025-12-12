@@ -396,6 +396,7 @@ function init() {
     startVHSTimer();
     renderHallOfFame();
     renderAchievements();
+    initDailyChallenge();
     setupEventListeners();
     checkURLParams();
     checkAPIStatus();
@@ -404,6 +405,56 @@ function init() {
     if (settings.sound) {
         initAudio();
     }
+}
+
+// Initialize daily challenge display
+function initDailyChallenge() {
+    const { DailyChallenge } = require('./modes/dailyChallenge.js');
+
+    try {
+        const challenge = DailyChallenge.getCurrentChallenge();
+        const streak = DailyChallenge.getStreak();
+
+        // Update challenge display
+        const matchupEl = $('challenge-matchup');
+        if (matchupEl) {
+            const players = matchupEl.querySelectorAll('.challenge-player');
+            if (players.length >= 2) {
+                players[0].textContent = challenge.player1;
+                players[1].textContent = challenge.player2;
+            }
+        }
+
+        // Update streak counter
+        const streakEl = $('streak-counter');
+        if (streakEl) {
+            streakEl.textContent = `🔥 ${streak}`;
+        }
+
+        // Update button text
+        const btnEl = $('challenge-btn');
+        if (btnEl && challenge.completed) {
+            btnEl.querySelector('.challenge-btn-text').textContent = 'COMPLETED ✓';
+            btnEl.disabled = true;
+            btnEl.style.opacity = '0.6';
+        }
+
+        // Add daily challenge button listener
+        if (btnEl && !challenge.completed) {
+            btnEl.addEventListener('click', () => {
+                startDailyBattle(challenge);
+            });
+        }
+    } catch (e) {
+        console.warn('Daily challenge init failed:', e);
+    }
+}
+
+function startDailyBattle(challenge) {
+    $('player1').value = challenge.player1;
+    $('player2').value = challenge.player2;
+    $('mode-1v1').click(); // Switch to 1v1 mode
+    startBattle();
 }
 
 function setupEventListeners() {
