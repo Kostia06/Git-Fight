@@ -38,6 +38,28 @@ export function calculateStats(user, repos) {
     const starsPerRepo = repos.length > 0 ? totalStars / repos.length : 0;
     const followerRatio = user.public_repos > 0 ? user.followers / user.public_repos : 0;
 
+    // Calculate new metrics
+    // Pull Requests: estimate from repos with pushed_at dates
+    const pullRequests = repos.reduce((sum, r) => {
+        if (r.pushed_at && r.updated_at) {
+            const monthsActive = (Date.now() - new Date(r.updated_at).getTime()) / (30 * 24 * 60 * 60 * 1000);
+            return sum + Math.max(1, Math.floor(monthsActive / 3)); // rough estimate: 1 PR per 3 months active
+        }
+        return sum;
+    }, 0);
+
+    // Issues: estimate from public_gists and repo activity
+    const issues = repos.reduce((sum, r) => sum + (r.open_issues_count || 0), 0);
+
+    // Commit Frequency: average commits per month (estimate from repos)
+    const commitFrequency = repos.length > 0 ? (totalStars + totalForks) / repos.length / 12 : 0;
+
+    // Language Diversity: count unique languages used
+    const languages = new Set(repos.map(r => r.language).filter(l => l)).size;
+
+    // Gists: public gists count
+    const gists = user.public_gists || 0;
+
     return {
         stars: totalStars,
         repos: repos.length,
@@ -45,7 +67,12 @@ export function calculateStats(user, repos) {
         forks: totalForks,
         age: accountAge,
         starsPerRepo,
-        followerRatio
+        followerRatio,
+        pullRequests,
+        issues,
+        commitFreq: Math.round(commitFrequency * 10) / 10,
+        languages,
+        gists
     };
 }
 
@@ -58,6 +85,9 @@ export function calculatePowerLevel(user, repos) {
     power += Math.min(stats.followers / 50, 25);
     power += Math.min(stats.age * 2, 10);
     power += Math.min(stats.starsPerRepo * 2, 15);
+    power += Math.min(stats.pullRequests / 10, 8);
+    power += Math.min(stats.commitFreq / 20, 7);
+    power += Math.min(stats.languages * 2, 10);
 
     return Math.min(Math.round(power), 100);
 }

@@ -5613,6 +5613,265 @@ body {
 
 }
 
+/* Small phones (<400px) - Ultra-compact layout */
+@media (max-width: 399px) {
+    html {
+        font-size: 12px;
+    }
+
+    .arcade-cabinet {
+        max-width: 100%;
+        margin: 0;
+        padding: 4px;
+        border-radius: 8px;
+    }
+
+    .arcade-frame {
+        border-radius: 6px;
+    }
+
+    .arcade-screen {
+        margin: 2px;
+        padding: 4px;
+    }
+
+    .title-line {
+        font-size: 1rem;
+    }
+
+    .title-line.accent {
+        font-size: 1.2rem;
+    }
+
+    .title-tagline {
+        font-size: 0.3rem;
+    }
+
+    /* Hide non-essential UI on small phones */
+    .stats-counter,
+    .quick-match-section,
+    .cabinet-top {
+        display: none !important;
+    }
+
+    .player-select {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .player-card {
+        padding: 4px;
+    }
+
+    .avatar-container {
+        width: 45px;
+        height: 45px;
+    }
+
+    .avatar-ring {
+        transform: scale(1.5);
+    }
+
+    .player-name-input {
+        font-size: 0.65rem;
+        padding: 3px 4px;
+    }
+
+    .fight-btn {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+    }
+
+    .vs-text {
+        font-size: 0.8rem;
+    }
+
+    /* Disable particles on very small screens for performance */
+    #particles-canvas {
+        display: none !important;
+    }
+
+    .vhs-record {
+        font-size: 0.35rem;
+    }
+
+    .input-prefix {
+        font-size: 0.6rem;
+    }
+
+    .preview-stat {
+        font-size: 0.5rem;
+    }
+
+    .nav-btn {
+        padding: 4px 8px;
+        font-size: 0.5rem;
+    }
+
+    .footer-bar {
+        font-size: 0.45rem;
+    }
+}
+
+/* Tablets Portrait (768px-1023px) - Optimized tablet layout */
+@media (min-width: 768px) and (max-width: 1023px) {
+    html {
+        font-size: 14px;
+    }
+
+    .arcade-cabinet {
+        max-width: 100%;
+        margin: 15px auto;
+        padding: 8px;
+    }
+
+    /* 2-column layout for player cards on tablets */
+    .player-select {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .player-card {
+        padding: 12px;
+    }
+
+    .avatar-container {
+        width: 85px;
+        height: 85px;
+    }
+
+    .avatar-ring {
+        width: 100px;
+        height: 100px;
+        transform: scale(1.8);
+        inset: 15px;
+    }
+
+    /* Larger touch targets (minimum 44x44px) */
+    .fight-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+        min-height: 44px;
+    }
+
+    .retro-btn,
+    .mode-btn {
+        min-height: 40px;
+    }
+
+    .player-name-input {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+        min-height: 36px;
+    }
+
+    /* Battle screen side-by-side fighters */
+    .battle-fighters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .fighter-panel {
+        gap: 10px;
+    }
+
+    .fighter-name {
+        font-size: 1.1rem;
+    }
+
+    /* Optimize spacing for tablet */
+    .title-section {
+        padding: 8px 0 4px;
+    }
+
+    .title-line {
+        font-size: 1.6rem;
+    }
+
+    .title-line.accent {
+        font-size: 2rem;
+    }
+
+    .game-mode-selector {
+        gap: 12px;
+    }
+
+    .vs-section {
+        padding: 3px 12px;
+    }
+
+    .fight-section {
+        margin-top: 12px;
+    }
+
+    .quick-match-section {
+        margin-top: 12px;
+    }
+
+    .quick-btns {
+        gap: 8px;
+    }
+
+    .quick-btn {
+        padding: 8px 12px;
+    }
+}
+
+/* Tablets Landscape (1024px-1279px) - Full side-by-side experience */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .arcade-cabinet {
+        max-width: 90%;
+        margin: 20px auto;
+    }
+
+    /* Maintain touch-friendly sizes */
+    .fight-btn,
+    .retro-btn,
+    .mode-btn {
+        min-height: 44px;
+        padding: 10px 25px;
+    }
+
+    .player-name-input {
+        min-height: 40px;
+        padding: 8px 12px;
+    }
+
+    /* Full side-by-side battle display */
+    .battle-fighters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    .player-select {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 20px;
+    }
+
+    .player-card {
+        padding: 15px;
+    }
+
+    .avatar-container {
+        width: 90px;
+        height: 90px;
+    }
+
+    /* Larger vs section */
+    .vs-section {
+        min-width: 100px;
+    }
+
+    .vs-text {
+        font-size: 1.2rem;
+    }
+}
+
 /* Even larger screens - keep container compact */
 @media (min-width: 1200px) {
     .arcade-cabinet {

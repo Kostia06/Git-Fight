@@ -40,7 +40,12 @@ export const BATTLE_CATEGORIES = [
     { key: 'age', label: 'YEARS ON GITHUB', icon: '📅', format: v => v.toFixed(1) },
     { key: 'starsPerRepo', label: 'STARS PER REPO', icon: '✨', format: v => parseFloat(v).toFixed(2) },
     { key: 'followerRatio', label: 'FOLLOWER RATIO', icon: '📊', format: v => parseFloat(v).toFixed(2) },
-    { key: 'forks', label: 'TOTAL FORKS', icon: '🍴', format: v => v.toLocaleString() }
+    { key: 'forks', label: 'TOTAL FORKS', icon: '🍴', format: v => v.toLocaleString() },
+    { key: 'pullRequests', label: 'PULL REQUESTS', icon: '🔀', format: v => v.toLocaleString() },
+    { key: 'issues', label: 'ISSUES', icon: '🐛', format: v => v.toLocaleString() },
+    { key: 'commitFreq', label: 'COMMITS/MONTH', icon: '📝', format: v => parseFloat(v).toFixed(1) },
+    { key: 'languages', label: 'LANGUAGES', icon: '💻', format: v => v.toLocaleString() },
+    { key: 'gists', label: 'GISTS', icon: '📄', format: v => v.toLocaleString() }
 ];
 
 export const LOADING_TIPS = [
@@ -66,7 +71,35 @@ export const ANNOUNCER_PHRASES = {
 };
 
 export const FAMOUS_DEVS = [
-    'torvalds', 'gaearon', 'sindresorhus', 'tj', 'yyx990803',
-    'addyosmani', 'paulirish', 'fat', 'mdo', 'defunkt',
-    'mojombo', 'wycats', 'dhh', 'jeresig', 'fabpot'
+    // Legends (20)
+    'torvalds', 'gvanrossum', 'brendaneich', 'timberners-lee', 'gaearon',
+    'dhh', 'mojombo', 'defunkt', 'tj', 'antirez',
+    'yyx990803', 'migueldeicaza', 'pjhyett', 'schacon', 'ry',
+    'evykassirer', 'github', 'microsoft', 'google', 'facebook',
+    // Famous Library Authors (30)
+    'sindresorhus', 'addyosmani', 'paulirish', 'fat', 'mdo',
+    'jeresig', 'fabpot', 'taylorotwell', 'wesbos', 'kentcdodds',
+    'mpj', 'dan_abramov', 'swyx', 'cassidoo', 'sarah_edo',
+    'TheLarkInn', 'youyuxi', 'antfu', 'patak-dev', 'bluwy',
+    'sokra', 'evanw', 'jlongster', 'vjeux', 'vjeux',
+    'orta', 'rkrasiuk', 'kolodny', 'amasad', 'gresham',
+    'addyosmani', 'subtleGradient', 'tmm1', 'slexaxton', 'littledan',
+    // Rising Stars (30)
+    'monkwonderland', 'acdlite', 'threepointone', 'sebmarkbage', 'sophiebits',
+    'szhell', 'lencioni', 'gman', 'tomocchino', 'seungho',
+    'vjeux', 'jcdav', 'dominictarr', 'substack', 'esnext',
+    'zcbenz', 'sindresorhus', 'jashkenas', 'visionmedia', 'bnoordhuis',
+    'ry', 'jasnell', 'cjihrig', 'addaleax', 'targos',
+    'Flarna', 'everyoneisbots', 'bzbarsky', 'domenic', 'slightlyoff',
+    // Community Educators (20)
+    'traversymedia', 'fireship-io', 'academind', 'developedbyed', 'cleverprogrammer',
+    'codewithharry', 'hiteshchoudhary', 'thenetninjas', 'programmingwithmosh', 'freecodecamp',
+    'thecodeshot', 'poojag50', 'tech_with_nana', 'codeWithHarry', 'jamesQQuick',
+    'learnwithjason', 'kyleshevlin', 'eggheadio', 'frontendmasters', 'scrimba',
+    // Additional notable devs
+    'vercel', 'nextjs', 'remix-run', 'solidjs', 'astro',
+    'qwikdev', 'sveltejs', 'vuejs', 'angular', 'reactjs',
+    'emberjs', 'backbonejs', 'underscorejs', 'lodash', 'momentjs',
+    'webpack', 'vite', 'parcel', 'rollup', 'esbuild',
+    'typescript', 'babel', 'postcss', 'tailwindcss', 'chakra-ui'
 ];

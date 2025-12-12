@@ -430,7 +430,7 @@ function setupEventListeners() {
     // Quick match buttons
     $$('.quick-btn').forEach(btn => {
         if (btn.id === 'random-btn') {
-            btn.addEventListener('click', randomMatch);
+            btn.addEventListener('click', youVsRandom);
         } else {
             btn.addEventListener('click', () => {
                 $('player1').value = btn.dataset.p1;
@@ -723,9 +723,19 @@ function resizeCanvas() {
 function startParticles() {
     if (animationId) return;
 
+    // Determine particle count based on device screen size
+    let particleCount = 50;
+    if (window.innerWidth < 400) {
+        particleCount = 0; // Disable on very small screens
+    } else if (window.innerWidth < 768) {
+        particleCount = 15; // Reduce on mobile
+    } else if (window.innerWidth < 1024) {
+        particleCount = 30; // Medium on tablets
+    }
+
     // Create particles
     particles = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * particlesCanvas.width,
             y: Math.random() * particlesCanvas.height,
@@ -1365,9 +1375,23 @@ function calculateStats(user, repos) {
     };
 }
 
+// Utility function to shuffle array
+function shuffleArray(arr) {
+    const result = [...arr];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
 async function runBattle() {
     switchScreen('battle-screen');
     triggerScreenFlash();
+
+    // Select 7 random categories from 12 available
+    const selectedCategories = shuffleArray(BATTLE_CATEGORIES).slice(0, 7);
+    gameState.selectedCategories = selectedCategories;
 
     // Setup fighters
     $('f1-img').src = gameState.player1.avatar_url;
@@ -1412,14 +1436,14 @@ async function runBattle() {
     await sleep(1500);
 
     // Run rounds
-    for (let i = 0; i < BATTLE_CATEGORIES.length; i++) {
+    for (let i = 0; i < selectedCategories.length; i++) {
         gameState.currentRound = i + 1;
 
         // Update round display
         $('round-num').textContent = i + 1;
         $$('.round-dot')[i].classList.add('active');
 
-        const cat = BATTLE_CATEGORIES[i];
+        const cat = selectedCategories[i];
         $('category-icon').textContent = cat.icon;
         $('battle-category').textContent = cat.label;
 
