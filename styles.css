@@ -4126,6 +4126,45 @@ body {
     animation: clashIn 0.5s ease-out;
 }
 
+/* Clash animation variants */
+.clash-effect[data-clash-type="lightning"] {
+    animation: clashLightning 0.4s ease-out !important;
+}
+
+.clash-effect[data-clash-type="explosion"] {
+    animation: clashExplosion 0.4s ease-out !important;
+}
+
+.clash-effect[data-clash-type="laser"] {
+    animation: clashLaser 0.5s ease-in-out !important;
+}
+
+.clash-effect[data-clash-type="shockwave"] {
+    animation: clashShockwave 0.6s ease-out !important;
+}
+
+.clash-effect[data-clash-type="pixels"] {
+    animation: clashPixels 0.4s ease-out !important;
+}
+
+/* Critical hit effects */
+.critical-flash {
+    animation: criticalFlash 0.3s ease-out !important;
+}
+
+.critical-glow {
+    animation: criticalGlow 0.5s ease-in-out !important;
+}
+
+/* Combo effects */
+.combo-fire {
+    animation: comboFire 0.8s ease-in-out infinite !important;
+}
+
+.combo-gold {
+    animation: comboGold 0.6s ease-in-out infinite !important;
+}
+
 @keyframes clashIn {
     0% { transform: scale(0) rotate(0deg); }
     50% { transform: scale(1.5) rotate(180deg); }
@@ -5612,6 +5651,68 @@ body {
     }
 
 }
+
+/* ============================================
+   ENHANCED ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes clashLightning {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 0px #05d9e8); }
+    25% { filter: brightness(2) drop-shadow(0 0 20px #05d9e8); }
+    50% { filter: brightness(1.5) drop-shadow(0 0 30px #05d9e8); }
+    75% { filter: brightness(2.2) drop-shadow(0 0 15px #05d9e8); }
+}
+
+@keyframes clashExplosion {
+    0%, 100% { filter: brightness(1) blur(0px); }
+    50% { filter: brightness(2.5) blur(5px); }
+}
+
+@keyframes clashLaser {
+    0% { clip-path: inset(0 100% 0 0); }
+    50% { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(0 0 0 100%); }
+}
+
+@keyframes clashShockwave {
+    0% { border-radius: 0%; opacity: 1; }
+    100% { border-radius: 50%; opacity: 0; transform: scale(2); }
+}
+
+@keyframes clashPixels {
+    0%, 100% { filter: brightness(1) pixelate(0px); }
+    50% { filter: brightness(2) pixelate(8px); }
+}
+
+@keyframes criticalFlash {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(0.3) invert(1); }
+}
+
+@keyframes criticalGlow {
+    0%, 100% { box-shadow: 0 0 10px #ff2a6d; }
+    50% { box-shadow: 0 0 30px #ff2a6d, 0 0 50px rgba(255, 42, 109, 0.8); }
+}
+
+@keyframes comboPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+@keyframes comboFire {
+    0%, 100% { color: #ffe66d; text-shadow: 0 0 10px #ff6b35; }
+    50% { color: #ff6b35; text-shadow: 0 0 20px #ff2a6d, 0 0 30px #ffe66d; }
+}
+
+@keyframes comboGold {
+    0%, 100% { color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 30px #ffe66d; }
+    50% { color: #ffe66d; text-shadow: 0 0 30px #ffd700, 0 0 50px rgba(255, 215, 0, 0.8); }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN MEDIA QUERIES
+   ============================================ */
 
 /* Small phones (<400px) - Ultra-compact layout */
 @media (max-width: 399px) {

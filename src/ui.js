@@ -168,6 +168,96 @@ export function launchConfetti() {
 }
 
 // ============================================
+// ENHANCED BATTLE ANIMATIONS
+// ============================================
+
+export function showClashAnimation(type = 'random') {
+    const overlay = $('glitch-overlay');
+    if (!overlay) return;
+
+    const animationTypes = ['lightning', 'explosion', 'laser', 'shockwave', 'pixels'];
+    const selectedType = type === 'random' ? animationTypes[Math.floor(Math.random() * animationTypes.length)] : type;
+
+    overlay.setAttribute('data-clash-type', selectedType);
+    overlay.classList.add('clash-effect');
+
+    // Screen shake effect
+    screenShake(5);
+
+    setTimeout(() => overlay.classList.remove('clash-effect'), 300);
+}
+
+export function showCriticalHit() {
+    playSound('critical-hit');
+
+    // Strong screen shake
+    screenShake(8);
+
+    // Color invert flash
+    const screen = document.querySelector('.arcade-screen');
+    if (screen) {
+        screen.classList.add('critical-flash');
+        setTimeout(() => screen.classList.remove('critical-flash'), 150);
+    }
+
+    // Glow effect on fighters
+    const f1Health = $('f1-health');
+    const f2Health = $('f2-health');
+    if (f1Health) f1Health.classList.add('critical-glow');
+    if (f2Health) f2Health.classList.add('critical-glow');
+
+    setTimeout(() => {
+        if (f1Health) f1Health.classList.remove('critical-glow');
+        if (f2Health) f2Health.classList.remove('critical-glow');
+    }, 400);
+}
+
+export function showComboVisual(comboCount) {
+    const comboEl = document.querySelector('.combo-counter');
+    if (!comboEl) return;
+
+    // Add visual intensity based on combo count
+    if (comboCount >= 4) {
+        comboEl.classList.add('combo-fire');
+    }
+    if (comboCount >= 6) {
+        comboEl.classList.add('combo-gold');
+    }
+
+    // Pulse effect
+    comboEl.style.animation = 'none';
+    setTimeout(() => {
+        comboEl.style.animation = 'comboPulse 0.6s ease-out';
+    }, 10);
+}
+
+export function screenShake(intensity = 5) {
+    const screen = document.querySelector('.arcade-screen');
+    if (!screen) return;
+
+    const duration = 200; // ms
+    const frequency = 50; // Hz
+    const startTime = Date.now();
+
+    function shake() {
+        const elapsed = Date.now() - startTime;
+        if (elapsed > duration) {
+            screen.style.transform = 'translate(0, 0)';
+            return;
+        }
+
+        const progress = 1 - (elapsed / duration);
+        const x = (Math.random() - 0.5) * intensity * progress * 2;
+        const y = (Math.random() - 0.5) * intensity * progress * 2;
+
+        screen.style.transform = `translate(${x}px, ${y}px)`;
+        requestAnimationFrame(shake);
+    }
+
+    shake();
+}
+
+// ============================================
 // AUDIO
 // ============================================
 
@@ -195,7 +285,8 @@ export function playSound(type) {
         win: { freq: [523, 659, 784], duration: 0.3 },
         combo: { freq: [440, 554, 659], duration: 0.2 },
         announce: { freq: 880, duration: 0.15 },
-        achievement: { freq: [659, 784, 988, 1047], duration: 0.4 }
+        achievement: { freq: [659, 784, 988, 1047], duration: 0.4 },
+        'critical-hit': { freq: [100, 150], duration: 0.3 }
     };
 
     const sound = sounds[type] || sounds.start;
