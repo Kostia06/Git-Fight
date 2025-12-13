@@ -5498,6 +5498,32 @@ body {
     .loading-vs {
         order: -1;
     }
+
+    /* Team mode responsive for tablets/phones */
+    .player-select.team-mode {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+        padding: 8px;
+    }
+
+    .player-select.team-mode .player-card {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .player-select.team-mode .team-vs-section {
+        margin-top: 10px;
+    }
+
+    .player-select.team-mode .team-start-btn {
+        padding: 5px 0;
+    }
+
+    .player-select.team-mode .vs-badge {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -6197,6 +6223,44 @@ body {
 
     .footer-bar {
         font-size: 0.45rem;
+    }
+
+    /* Team mode for very small phones */
+    .player-select.team-mode {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        gap: 8px;
+        padding: 6px;
+    }
+
+    .player-select.team-mode .player-card.p1 {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .player-select.team-mode .player-card.p3 {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .player-select.team-mode .player-card.p2 {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .player-select.team-mode .player-card.p4 {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .player-select.team-mode .player-card {
+        max-width: 100%;
+        padding: 8px;
+    }
+
+    .player-select.team-mode .team-vs-section {
+        grid-column: 1;
+        margin-top: 8px;
     }
 }
 
