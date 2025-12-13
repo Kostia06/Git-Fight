@@ -408,10 +408,10 @@ function init() {
 }
 
 // Initialize daily challenge display
-function initDailyChallenge() {
-    const { DailyChallenge } = require('./modes/dailyChallenge.js');
-
+async function initDailyChallenge() {
     try {
+        const { DailyChallenge } = await import('./modes/dailyChallenge.js');
+
         const challenge = DailyChallenge.getCurrentChallenge();
         const streak = DailyChallenge.getStreak();
 
@@ -480,16 +480,20 @@ function setupEventListeners() {
 
     // Quick match buttons
     $$('.quick-btn').forEach(btn => {
-        if (btn.id === 'random-btn') {
-            btn.addEventListener('click', youVsRandom);
-        } else {
-            btn.addEventListener('click', () => {
-                $('player1').value = btn.dataset.p1;
-                $('player2').value = btn.dataset.p2;
-                triggerGlitch();
-                startBattle();
-            });
-        }
+        btn.addEventListener('click', () => {
+            $('player1').value = btn.dataset.p1;
+            $('player2').value = btn.dataset.p2;
+            triggerGlitch();
+            startBattle();
+        });
+    });
+
+    // Individual player roller buttons
+    $$('.input-roller-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const playerNum = e.target.dataset.player;
+            rollRandomPlayer(playerNum);
+        });
     });
 
     // Game mode selector
@@ -504,14 +508,23 @@ function setupEventListeners() {
             // Get mode
             currentMode = btn.dataset.mode;
 
-            // Update UI
-            if (currentMode === 'random') {
-                playerSelect.classList.add('random-mode');
-                playerSelect.classList.add('random-mode-active');
-                $('player2').value = ''; // Clear P2 input
+            // Update UI based on mode
+            if (currentMode === 'team') {
+                // Team mode - show team UI
+                playerSelect.classList.remove('team-mode');
+                playerSelect.classList.add('team-mode');
+                // Show team players
+                $$('.team-player').forEach(tp => tp.style.display = 'block');
+                showError('Enter 4 team members (Team Alpha vs Team Beta)');
             } else {
-                playerSelect.classList.remove('random-mode');
-                playerSelect.classList.remove('random-mode-active');
+                // 1v1 mode - standard
+                playerSelect.classList.remove('team-mode');
+                // Hide team players
+                $$('.team-player').forEach(tp => tp.style.display = 'none');
+                $('player2').value = ''; // Clear P2 and team inputs
+                $('player3').value = '';
+                $('player4').value = '';
+                showError(''); // Clear error
             }
         });
     });
@@ -635,12 +648,7 @@ function setupEventListeners() {
                 $('settings-panel').classList.toggle('open');
                 e.preventDefault();
             } else if (e.key === 'y' || e.key === 'Y') {
-                const randomStartBtn = $('random-start-btn');
-                if (randomStartBtn && randomStartBtn.style.display !== 'none') {
-                    randomStartBtn.click();
-                } else if (currentMode === 'random') {
-                    startBattle();
-                }
+                startBattle();
                 e.preventDefault();
             } else if (e.key === 'Tab') {
                 if (document.activeElement === $('player1')) {
@@ -1249,48 +1257,218 @@ function updateURL(p1, p2) {
 let currentMode = '1v1'; // Game mode: '1v1' or 'random'
 
 
-function youVsRandom() {
-    // Get random developer
-    const randomDev = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
+function rollRandomPlayer(playerNum) {
+    // Get the specific roller button
+    const rollerBtn = document.querySelector(`[data-player="${playerNum}"]`);
 
-    // Check if either input already has a value
-    const p1 = $('player1').value.trim();
-    const p2 = $('player2').value.trim();
+    // Prevent multiple clicks during animation
+    if (rollerBtn.classList.contains('rolling')) return;
 
-    if (p1 && !p2) {
-        // User already entered P1, fill P2 with random
-        $('player2').value = randomDev;
-        triggerGlitch();
-        startBattle();
-    } else if (p2 && !p1) {
-        // User already entered P2, fill P1 with random
-        $('player1').value = randomDev;
-        triggerGlitch();
-        startBattle();
-    } else {
-        // No input yet, prompt for username
-        const username = prompt('Enter your GitHub username:');
-        if (username && username.trim()) {
-            $('player1').value = username.trim();
-            $('player2').value = randomDev;
-            triggerGlitch();
-            startBattle();
+    // Add rolling animation to button
+    rollerBtn.classList.add('rolling');
+
+    // Map player number to input ID and card ID
+    const inputId = `player${playerNum}`;
+    const cardId = `p${playerNum}`;
+
+    // Animate card flip
+    const card = $(`${cardId}-avatar-container`);
+    if (card) {
+        card.classList.add('rolling');
+    }
+
+    // Generate random player after a short delay
+    setTimeout(() => {
+        const randomDev = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
+        $(inputId).value = randomDev;
+
+        // Trigger preview update
+        previewPlayer(inputId, cardId);
+
+        // Remove rolling animation from card
+        if (card) {
+            card.classList.remove('rolling');
         }
+
+        // Remove rolling animation from button
+        rollerBtn.classList.remove('rolling');
+    }, 200);
+}
+
+async function startTeamBattle() {
+    let p1Name = $('player1').value.trim();
+    let p3Name = $('player3').value.trim();
+    let p2Name = $('player2').value.trim();
+    let p4Name = $('player4').value.trim();
+
+    // Validate all 4 players are entered
+    if (!p1Name || !p3Name || !p2Name || !p4Name) {
+        showError('Enter all 4 team members!');
+        return;
+    }
+
+    // Check for duplicates
+    const allNames = [p1Name.toLowerCase(), p3Name.toLowerCase(), p2Name.toLowerCase(), p4Name.toLowerCase()];
+    if (new Set(allNames).size !== 4) {
+        showError('All team members must be different!');
+        return;
+    }
+
+    showError('');
+    playSound('start');
+    triggerGlitch();
+    switchScreen('loading-screen');
+
+    // Show loading tip
+    const tipEl = $('loading-tip');
+    if (tipEl) tipEl.textContent = LOADING_TIPS[Math.floor(Math.random() * LOADING_TIPS.length)];
+
+    // Update loading names to show teams
+    $('load-p1-name').textContent = `${p1Name} + ${p3Name}`;
+    $('load-p2-name').textContent = `${p2Name} + ${p4Name}`;
+
+    const phases = $$('.phase');
+    phases.forEach(p => p.classList.remove('active', 'done'));
+
+    try {
+        // Phase 1: Fetch all 4 team members
+        phases[0].classList.add('active');
+        updateProgress(15, 'Fetching team data...');
+
+        const [p1Data, p3Data, p2Data, p4Data] = await Promise.all([
+            fetchUser(p1Name),
+            fetchUser(p3Name),
+            fetchUser(p2Name),
+            fetchUser(p4Name)
+        ]);
+
+        // Show avatars in loading
+        const loadP1Img = $('load-p1-img');
+        const loadP2Img = $('load-p2-img');
+        if (loadP1Img) {
+            loadP1Img.src = p1Data.avatar_url;
+            loadP1Img.onload = () => loadP1Img.classList.add('loaded');
+        }
+        if (loadP2Img) {
+            loadP2Img.src = p2Data.avatar_url;
+            loadP2Img.onload = () => loadP2Img.classList.add('loaded');
+        }
+
+        phases[0].classList.remove('active');
+        phases[0].classList.add('done');
+
+        // Phase 2: Fetch repos for all 4 members
+        phases[1].classList.add('active');
+        updateProgress(40, 'Scanning repositories...');
+
+        const [p1Repos, p3Repos, p2Repos, p4Repos] = await Promise.all([
+            fetchRepos(p1Name),
+            fetchRepos(p3Name),
+            fetchRepos(p2Name),
+            fetchRepos(p4Name)
+        ]);
+
+        phases[1].classList.remove('active');
+        phases[1].classList.add('done');
+
+        // Phase 3: Calculate team power
+        phases[2].classList.add('active');
+        updateProgress(70, 'Aggregating team power...');
+
+        await sleep(400);
+
+        // Import TeamBattle class
+        const { TeamBattle } = await import('./modes/teamBattle.js');
+
+        // Create team battle instance
+        const teamAlpha = [p1Data, p3Data];
+        const teamBeta = [p2Data, p4Data];
+
+        const alphaStats = [
+            calculateStats(p1Data, p1Repos),
+            calculateStats(p3Data, p3Repos)
+        ];
+        const betaStats = [
+            calculateStats(p2Data, p2Repos),
+            calculateStats(p4Data, p4Repos)
+        ];
+
+        // Create aggregated team stats
+        const aggregateTeamStats = (stats) => {
+            const aggregated = {};
+            const keys = Object.keys(stats[0]);
+
+            keys.forEach(key => {
+                // Sum metrics for raw strength
+                if (['stars', 'repos', 'followers', 'forks', 'pullRequests', 'issues', 'gists'].includes(key)) {
+                    aggregated[key] = stats.reduce((sum, s) => sum + (s[key] || 0), 0);
+                }
+                // Average metrics for quality
+                else if (['age', 'starsPerRepo', 'followerRatio', 'commitFreq'].includes(key)) {
+                    aggregated[key] = stats.reduce((sum, s) => sum + (s[key] || 0), 0) / stats.length;
+                }
+                // Max for languages
+                else if (key === 'languages') {
+                    aggregated[key] = Math.max(...stats.map(s => s[key] || 0));
+                }
+            });
+            return aggregated;
+        };
+
+        // Store team data in game state
+        gameState.player1 = { login: `${p1Name} & ${p3Name}`, team: teamAlpha, stats: alphaStats };
+        gameState.player2 = { login: `${p2Name} & ${p4Name}`, team: teamBeta, stats: betaStats };
+        gameState.p1Stats = aggregateTeamStats(alphaStats);
+        gameState.p2Stats = aggregateTeamStats(betaStats);
+        gameState.p1Score = 0;
+        gameState.p2Score = 0;
+        gameState.currentRound = 0;
+        gameState.combo = { streak: 0, lastWinner: null };
+        gameState.isTeamMode = true;
+        gameState.teamBattle = new TeamBattle([p1Data, p3Data], [p2Data, p4Data]);
+
+        // Calculate team power
+        const p1Power = gameState.teamBattle.calculateTeamPower('alpha');
+        const p2Power = gameState.teamBattle.calculateTeamPower('beta');
+
+        $('load-p1-rank').textContent = getRank(p1Power).name;
+        $('load-p2-rank').textContent = getRank(p2Power).name;
+
+        phases[2].classList.remove('active');
+        phases[2].classList.add('done');
+
+        // Phase 4: Prepare arena
+        phases[3].classList.add('active');
+        updateProgress(90, 'Preparing arena...');
+
+        await sleep(400);
+
+        phases[3].classList.remove('active');
+        phases[3].classList.add('done');
+        updateProgress(100, 'READY!');
+
+        await sleep(300);
+
+        updateURL(p1Name, p2Name);
+        runBattle();
+
+    } catch (error) {
+        showError(error.message);
+        switchScreen('title-screen');
     }
 }
 
 async function startBattle() {
+    // Handle team mode separately
+    if (currentMode === 'team') {
+        return await startTeamBattle();
+    }
+
     let p1Name = $('player1').value.trim();
     let p2Name = $('player2').value.trim();
 
-    // Auto-fill P2 with random developer if in random mode
-    if (currentMode === 'random' && p1Name && !p2Name) {
-        p2Name = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
-        $('player2').value = p2Name;
-    }
-
     if (!p1Name) {
-        showError(currentMode === 'random' ? 'Enter your username!' : 'Enter both usernames!');
+        showError('Enter both usernames!');
         return;
     }
 
@@ -1444,10 +1622,17 @@ async function runBattle() {
     const selectedCategories = shuffleArray(BATTLE_CATEGORIES).slice(0, 7);
     gameState.selectedCategories = selectedCategories;
 
-    // Setup fighters
-    $('f1-img').src = gameState.player1.avatar_url;
+    // Setup fighters - handle both team and regular mode
+    const getAvatarUrl = (player, isTeam = false) => {
+        return isTeam ? player.team[0].avatar_url : player.avatar_url;
+    };
+
+    const p1AvatarUrl = getAvatarUrl(gameState.player1, gameState.isTeamMode);
+    const p2AvatarUrl = getAvatarUrl(gameState.player2, gameState.isTeamMode);
+
+    $('f1-img').src = p1AvatarUrl;
     $('f1-name').textContent = gameState.player1.login;
-    $('f1-title').textContent = getTitle(gameState.p1Stats);
+    $('f1-title').textContent = gameState.isTeamMode ? '👥 TEAM ALPHA' : getTitle(gameState.p1Stats);
     $('f1-score').textContent = '0';
     $('f1-health').style.width = '100%';
     $('f1-health').className = 'health-fill';
@@ -1455,9 +1640,9 @@ async function runBattle() {
     $('f1-hp').textContent = '100%';
     $('f1-sp').textContent = '0%';
 
-    $('f2-img').src = gameState.player2.avatar_url;
+    $('f2-img').src = p2AvatarUrl;
     $('f2-name').textContent = gameState.player2.login;
-    $('f2-title').textContent = getTitle(gameState.p2Stats);
+    $('f2-title').textContent = gameState.isTeamMode ? '👥 TEAM BETA' : getTitle(gameState.p2Stats);
     $('f2-score').textContent = '0';
     $('f2-health').style.width = '100%';
     $('f2-health').className = 'health-fill';
@@ -1516,14 +1701,13 @@ async function showRound(category, roundIndex) {
     const p1Val = gameState.p1Stats[category.key];
     const p2Val = gameState.p2Stats[category.key];
 
-    // Show clash
-    const clashEffect = $('clash-effect');
-    clashEffect.classList.add('active');
+    // Show clash with new animation system
+    const { showClashAnimation } = await import('./ui.js');
+    showClashAnimation('random');
     playSound('hit');
     triggerGlitch();
 
     await sleep(400);
-    clashEffect.classList.remove('active');
 
     // Show comparison
     const comparison = $('stat-comparison');
