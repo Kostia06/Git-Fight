@@ -1561,7 +1561,7 @@ body {
 
 /* Uniform card sizing for team mode */
 .player-select.team-mode .player-card {
-    max-width: 220px !important;
+    max-width: 250px !important;
     width: 100%;
     justify-self: center !important;
 }
@@ -1780,13 +1780,13 @@ body {
 .player-card {
     background: linear-gradient(135deg, rgba(45, 27, 78, 0.9), rgba(26, 10, 46, 0.95));
     border-radius: 12px;
-    padding: 12px;
+    padding: 14px;
     position: relative;
     overflow: visible;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
     width: 100%;
-    max-width: 240px;
+    max-width: 260px;
     perspective: 1000px;
 }
 
@@ -1900,17 +1900,17 @@ body {
 
 /* Avatar */
 .avatar-container {
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 10px;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 12px;
     position: relative;
     overflow: visible;
 }
 
 .avatar-container.large {
-    width: 85px;
-    height: 85px;
-    margin: 0 auto 12px;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
 }
 
 .player-card:hover .avatar-container {
@@ -1969,18 +1969,7 @@ body {
 
 
 .avatar-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 50%;
-    border: 3px solid;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    z-index: 2;
-    box-sizing: border-box;
+    display: none;
 }
 
 
@@ -5341,21 +5330,17 @@ body {
     }
 
     .avatar-container {
-        width: 65px;
-        height: 65px;
+        width: 90px;
+        height: 90px;
     }
 
     .avatar-container.large {
-        width: 80px;
-        height: 80px;
+        width: 110px;
+        height: 110px;
     }
 
     .avatar-ring {
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        border-width: 2px;
+        display: none;
     }
 
     .card-header {
@@ -5591,22 +5576,18 @@ body {
     }
 
     .avatar-container {
-        width: 55px;
-        height: 55px;
-        margin-bottom: 8px;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
     }
 
     .avatar-container.large {
-        width: 65px;
-        height: 65px;
+        width: 100px;
+        height: 100px;
     }
 
     .avatar-ring {
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        border-width: 2px;
+        display: none;
     }
 
     .input-wrapper {
@@ -6225,12 +6206,17 @@ body {
         font-size: 0.45rem;
     }
 
-    /* Team mode for very small phones */
+    /* Team mode for very small phones - compact 2x2 */
     .player-select.team-mode {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto;
-        gap: 8px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 8px 6px;
         padding: 6px;
+    }
+
+    .player-select.team-mode .player-card {
+        max-width: 100%;
+        padding: 8px;
     }
 
     .player-select.team-mode .player-card.p1 {
@@ -6239,28 +6225,24 @@ body {
     }
 
     .player-select.team-mode .player-card.p3 {
-        grid-column: 1;
-        grid-row: 2;
+        grid-column: 2;
+        grid-row: 1;
     }
 
     .player-select.team-mode .player-card.p2 {
         grid-column: 1;
-        grid-row: 3;
+        grid-row: 2;
     }
 
     .player-select.team-mode .player-card.p4 {
-        grid-column: 1;
-        grid-row: 4;
-    }
-
-    .player-select.team-mode .player-card {
-        max-width: 100%;
-        padding: 8px;
+        grid-column: 2;
+        grid-row: 2;
     }
 
     .player-select.team-mode .team-vs-section {
-        grid-column: 1;
-        margin-top: 8px;
+        grid-column: 1 / -1;
+        grid-row: 3;
+        margin-top: 4px;
     }
 }
 
@@ -6275,6 +6257,8 @@ body {
         margin: 15px auto;
         padding: 8px;
     }
+
+
 
     /* 2-column layout for player cards on tablets */
     .player-select {
