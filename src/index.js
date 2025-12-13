@@ -396,7 +396,6 @@ function init() {
     startVHSTimer();
     renderHallOfFame();
     renderAchievements();
-    initDailyChallenge();
     setupEventListeners();
     checkURLParams();
     checkAPIStatus();
@@ -405,99 +404,6 @@ function init() {
     if (settings.sound) {
         initAudio();
     }
-}
-
-// Initialize daily challenge display
-async function initDailyChallenge() {
-    try {
-        const { DailyChallenge } = await import('./modes/dailyChallenge.js');
-
-        const challenge = DailyChallenge.getCurrentChallenge();
-        const streak = DailyChallenge.getStreak();
-
-        // Update challenge display with players and avatars
-        if (challenge.player1 && challenge.player2) {
-            // Update player names
-            const p1El = $('challenge-p1');
-            const p2El = $('challenge-p2');
-            if (p1El) p1El.textContent = challenge.player1;
-            if (p2El) p2El.textContent = challenge.player2;
-
-            // Update avatars
-            const p1AvatarEl = $('challenge-p1-avatar');
-            const p2AvatarEl = $('challenge-p2-avatar');
-
-            if (p1AvatarEl) {
-                p1AvatarEl.src = `https://github.com/${challenge.player1}.png?size=128`;
-                p1AvatarEl.onerror = () => {
-                    p1AvatarEl.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="50" font-size="40" fill="%23fff" text-anchor="middle" dominant-baseline="central">?</text></svg>';
-                };
-            }
-
-            if (p2AvatarEl) {
-                p2AvatarEl.src = `https://github.com/${challenge.player2}.png?size=128`;
-                p2AvatarEl.onerror = () => {
-                    p2AvatarEl.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="50" font-size="40" fill="%23fff" text-anchor="middle" dominant-baseline="central">?</text></svg>';
-                };
-            }
-        }
-
-        // Update streak counter
-        const streakEl = $('streak-counter');
-        if (streakEl) {
-            streakEl.textContent = `🔥 ${streak}`;
-        }
-
-        // Update button display
-        const btnEl = $('challenge-btn');
-        const btnTextEl = btnEl.querySelector('.challenge-btn-text');
-
-        if (challenge.completed) {
-            btnTextEl.textContent = 'COMPLETED ✓';
-            btnEl.disabled = true;
-            btnEl.classList.add('completed');
-        } else {
-            btnTextEl.textContent = 'ATTEMPT TODAY';
-            btnEl.disabled = false;
-            btnEl.classList.remove('completed');
-        }
-
-        // Update date display
-        const dateEl = $('challenge-date');
-        if (dateEl) {
-            const today = new Date().toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric'
-            });
-            dateEl.textContent = `Today: ${today}`;
-        }
-
-        // Remove old listeners and add new one
-        const newBtnEl = btnEl.cloneNode(true);
-        btnEl.parentNode.replaceChild(newBtnEl, btnEl);
-
-        newBtnEl.addEventListener('click', () => {
-            startDailyBattle(challenge);
-        });
-    } catch (e) {
-        console.warn('Daily challenge init failed:', e);
-    }
-}
-
-function startDailyBattle(challenge) {
-    // Set both player values
-    $('player1').value = challenge.player1;
-    $('player2').value = challenge.player2;
-
-    // Update previews for both players
-    previewPlayer('player1', 'p1');
-    previewPlayer('player2', 'p2');
-
-    // Switch to 1v1 mode
-    $('mode-1v1').click();
-
-    // Start battle
-    startBattle();
 }
 
 function setupEventListeners() {
@@ -523,16 +429,6 @@ function setupEventListeners() {
         if (e.key === 'Enter') startBattle();
     });
     $('player2').addEventListener('input', debounce(() => previewPlayer('player2', 'p2'), 400));
-
-    // Quick match buttons
-    $$('.quick-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            $('player1').value = btn.dataset.p1;
-            $('player2').value = btn.dataset.p2;
-            triggerGlitch();
-            startBattle();
-        });
-    });
 
     // Individual player roller buttons
     $$('.input-roller-btn').forEach(btn => {
@@ -707,18 +603,6 @@ function setupEventListeners() {
                     $('player1').focus();
                     e.preventDefault();
                 }
-            } else if (e.key === '1') {
-                const quickBtns = document.querySelectorAll('.quick-btn:not(.random-btn)');
-                if (quickBtns[0]) quickBtns[0].click();
-                e.preventDefault();
-            } else if (e.key === '2') {
-                const quickBtns = document.querySelectorAll('.quick-btn:not(.random-btn)');
-                if (quickBtns[1]) quickBtns[1].click();
-                e.preventDefault();
-            } else if (e.key === '3') {
-                const quickBtns = document.querySelectorAll('.quick-btn:not(.random-btn)');
-                if (quickBtns[2]) quickBtns[2].click();
-                e.preventDefault();
             }
         }
 
@@ -1971,7 +1855,6 @@ function updateHealthBars() {
 function showResults() {
     switchScreen('results-screen');
     playSound('win');
-    launchConfetti();
     triggerScreenFlash();
 
     const p1Score = gameState.p1Score;

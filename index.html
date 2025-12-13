@@ -151,46 +151,6 @@
                     </div>
 
 
-                    <!-- Daily Challenge Card -->
-                    <div class="daily-challenge-card" id="daily-challenge-card">
-                        <div class="challenge-header">
-                            <div class="challenge-title-section">
-                                <span class="challenge-icon">⏰</span>
-                                <span class="challenge-title">DAILY CHALLENGE</span>
-                            </div>
-                            <span class="streak-counter" id="streak-counter">🔥 Streak: 0</span>
-                        </div>
-                        <div class="challenge-matchup" id="challenge-matchup">
-                            <div class="challenge-player-box">
-                                <img class="challenge-avatar" id="challenge-p1-avatar" src="" alt="">
-                                <span class="challenge-player" id="challenge-p1">???</span>
-                            </div>
-                            <span class="challenge-vs">VS</span>
-                            <div class="challenge-player-box">
-                                <img class="challenge-avatar" id="challenge-p2-avatar" src="" alt="">
-                                <span class="challenge-player" id="challenge-p2">???</span>
-                            </div>
-                        </div>
-                        <div class="challenge-actions">
-                            <button class="challenge-btn" id="challenge-btn">
-                                <span class="challenge-btn-text">ATTEMPT TODAY</span>
-                                <span class="challenge-btn-reward" id="challenge-reward">+100 XP</span>
-                            </button>
-                            <span class="challenge-date" id="challenge-date"></span>
-                        </div>
-                    </div>
-
-                    <div class="game-mode-selector">
-                        <button class="mode-btn active" id="mode-1v1" data-mode="1v1">
-                            <span class="mode-icon">⚔️</span>
-                            <span class="mode-label">1v1</span>
-                        </button>
-                        <button class="mode-btn" id="mode-team" data-mode="team">
-                            <span class="mode-icon">👥</span>
-                            <span class="mode-label">TEAM 2v2</span>
-                        </button>
-                    </div>
-
                     <div class="player-select">
                         <div class="player-card p1">
                             <div class="card-glow"></div>
@@ -436,36 +396,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Team Battle Start Button -->
-                    <div class="team-vs-section">
-                        <button class="team-start-btn" id="team-start-btn">
-                            <span class="team-btn-text">⚔️ START TEAM BATTLE</span>
-                        </button>
-                    </div>
-
-                    <div class="error-display" id="error-msg"></div>
-
-                    <div class="quick-match-section">
-                        <div class="quick-btns">
-                            <button class="quick-btn" data-p1="torvalds" data-p2="gaearon">
-                                <span class="quick-icon">👑</span>
-                                <span class="quick-label">LEGENDS</span>
-                                <span class="key-hint-tiny">1</span>
-                            </button>
-                            <button class="quick-btn" data-p1="sindresorhus" data-p2="tj">
-                                <span class="quick-icon">🌟</span>
-                                <span class="quick-label">ICONS</span>
-                                <span class="key-hint-tiny">2</span>
-                            </button>
-                            <button class="quick-btn" data-p1="yyx990803" data-p2="gaearon">
-                                <span class="quick-icon">⚛</span>
-                                <span class="quick-label">FRAMEWORKS</span>
-                                <span class="key-hint-tiny">3</span>
+                        <!-- Team Battle Start Button -->
+                        <div class="team-vs-section">
+                            <button class="team-start-btn" id="team-start-btn">
+                                <span class="team-btn-text">⚔️ START TEAM BATTLE</span>
                             </button>
                         </div>
                     </div>
+
+                    <div class="error-display" id="error-msg"></div>
 
                     <div class="nav-buttons">
                         <button class="nav-btn" id="hall-of-fame-btn">
@@ -483,31 +423,6 @@
                             <span class="nav-label">LEADERBOARD</span>
                             <span class="key-hint-small">[L]</span>
                         </button>
-                    </div>
-
-                    <!-- Stats Counter -->
-                    <div class="stats-counter-bar">
-                        <div class="stat-box">
-                            <span class="stat-icon">⚔</span>
-                            <div class="stat-info">
-                                <span class="stat-label">TOTAL BATTLES</span>
-                                <span class="stat-value" id="total-battles">0</span>
-                            </div>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-icon">🔥</span>
-                            <div class="stat-info">
-                                <span class="stat-label">TODAY</span>
-                                <span class="stat-value" id="today-battles">0</span>
-                            </div>
-                        </div>
-                        <div class="stat-box streak-box">
-                            <span class="stat-icon">⚡</span>
-                            <div class="stat-info">
-                                <span class="stat-label">WIN STREAK</span>
-                                <span class="stat-value" id="win-streak">0</span>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="footer-bar">
