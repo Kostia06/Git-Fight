@@ -1304,15 +1304,36 @@ async function rollRandomPlayer(playerNum) {
 }
 
 async function getRandomGitHubUser() {
-    // Query GitHub API for random users
-    // Using search API to get users sorted by followers (to avoid bots/spam)
+    // Query GitHub API for random users with varied skill levels
+    // Uses weighted random selection to balance matchups fairly
     try {
-        // Get a random starting point for pagination
-        const randomPage = Math.floor(Math.random() * 100) + 1;
+        // Randomly choose a skill level bracket to fetch from
+        const skillLevel = Math.random();
+        let followerRange;
+        let randomPage;
+
+        if (skillLevel < 0.4) {
+            // 40% chance: Novice developers (10-100 followers)
+            followerRange = '10..100';
+            randomPage = Math.floor(Math.random() * 50) + 1;
+        } else if (skillLevel < 0.7) {
+            // 30% chance: Intermediate developers (100-1000 followers)
+            followerRange = '100..1000';
+            randomPage = Math.floor(Math.random() * 75) + 1;
+        } else if (skillLevel < 0.9) {
+            // 20% chance: Advanced developers (1000-10000 followers)
+            followerRange = '1000..10000';
+            randomPage = Math.floor(Math.random() * 50) + 1;
+        } else {
+            // 10% chance: Expert developers (10000+ followers)
+            followerRange = '>10000';
+            randomPage = Math.floor(Math.random() * 20) + 1;
+        }
+
         const perPage = 100;
 
         const response = await fetch(
-            `https://api.github.com/search/users?q=followers:>100&sort=followers&order=desc&page=${randomPage}&per_page=${perPage}&type=user`
+            `https://api.github.com/search/users?q=followers:${followerRange}&sort=followers&order=desc&page=${randomPage}&per_page=${perPage}`
         );
 
         if (!response.ok) {
