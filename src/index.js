@@ -415,13 +415,30 @@ async function initDailyChallenge() {
         const challenge = DailyChallenge.getCurrentChallenge();
         const streak = DailyChallenge.getStreak();
 
-        // Update challenge display
-        const matchupEl = $('challenge-matchup');
-        if (matchupEl) {
-            const players = matchupEl.querySelectorAll('.challenge-player');
-            if (players.length >= 2) {
-                players[0].textContent = challenge.player1;
-                players[1].textContent = challenge.player2;
+        // Update challenge display with players and avatars
+        if (challenge.player1 && challenge.player2) {
+            // Update player names
+            const p1El = $('challenge-p1');
+            const p2El = $('challenge-p2');
+            if (p1El) p1El.textContent = challenge.player1;
+            if (p2El) p2El.textContent = challenge.player2;
+
+            // Update avatars
+            const p1AvatarEl = $('challenge-p1-avatar');
+            const p2AvatarEl = $('challenge-p2-avatar');
+
+            if (p1AvatarEl) {
+                p1AvatarEl.src = `https://github.com/${challenge.player1}.png?size=128`;
+                p1AvatarEl.onerror = () => {
+                    p1AvatarEl.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="50" font-size="40" fill="%23fff" text-anchor="middle" dominant-baseline="central">?</text></svg>';
+                };
+            }
+
+            if (p2AvatarEl) {
+                p2AvatarEl.src = `https://github.com/${challenge.player2}.png?size=128`;
+                p2AvatarEl.onerror = () => {
+                    p2AvatarEl.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="50" font-size="40" fill="%23fff" text-anchor="middle" dominant-baseline="central">?</text></svg>';
+                };
             }
         }
 
@@ -431,20 +448,37 @@ async function initDailyChallenge() {
             streakEl.textContent = `🔥 ${streak}`;
         }
 
-        // Update button text
+        // Update button display
         const btnEl = $('challenge-btn');
-        if (btnEl && challenge.completed) {
-            btnEl.querySelector('.challenge-btn-text').textContent = 'COMPLETED ✓';
+        const btnTextEl = btnEl.querySelector('.challenge-btn-text');
+
+        if (challenge.completed) {
+            btnTextEl.textContent = 'COMPLETED ✓';
             btnEl.disabled = true;
-            btnEl.style.opacity = '0.6';
+            btnEl.classList.add('completed');
+        } else {
+            btnTextEl.textContent = 'ATTEMPT TODAY';
+            btnEl.disabled = false;
+            btnEl.classList.remove('completed');
         }
 
-        // Add daily challenge button listener
-        if (btnEl && !challenge.completed) {
-            btnEl.addEventListener('click', () => {
-                startDailyBattle(challenge);
+        // Update date display
+        const dateEl = $('challenge-date');
+        if (dateEl) {
+            const today = new Date().toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
             });
+            dateEl.textContent = `Today: ${today}`;
         }
+
+        // Remove old listeners and add new one
+        const newBtnEl = btnEl.cloneNode(true);
+        btnEl.parentNode.replaceChild(newBtnEl, btnEl);
+
+        newBtnEl.addEventListener('click', () => {
+            startDailyBattle(challenge);
+        });
     } catch (e) {
         console.warn('Daily challenge init failed:', e);
     }
@@ -458,10 +492,13 @@ function startDailyBattle(challenge) {
 }
 
 function setupEventListeners() {
-    // VS Battle button
+    // VS Battle button (1v1)
     $('vs-battle-btn').addEventListener('click', startBattle);
-    
-    // Random Start button
+
+    // Team Start button (Team 2v2)
+    $('team-start-btn').addEventListener('click', startBattle);
+
+    // Random Start button (legacy, hidden)
     $('random-start-btn').addEventListener('click', startBattle);
 
     // Player inputs

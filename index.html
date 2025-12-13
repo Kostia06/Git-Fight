@@ -154,17 +154,30 @@
                     <!-- Daily Challenge Card -->
                     <div class="daily-challenge-card" id="daily-challenge-card">
                         <div class="challenge-header">
-                            <span class="challenge-title">⏰ DAILY CHALLENGE</span>
-                            <span class="streak-counter" id="streak-counter">🔥 0</span>
+                            <div class="challenge-title-section">
+                                <span class="challenge-icon">⏰</span>
+                                <span class="challenge-title">DAILY CHALLENGE</span>
+                            </div>
+                            <span class="streak-counter" id="streak-counter">🔥 Streak: 0</span>
                         </div>
                         <div class="challenge-matchup" id="challenge-matchup">
-                            <span class="challenge-player">???</span>
+                            <div class="challenge-player-box">
+                                <img class="challenge-avatar" id="challenge-p1-avatar" src="" alt="">
+                                <span class="challenge-player" id="challenge-p1">???</span>
+                            </div>
                             <span class="challenge-vs">VS</span>
-                            <span class="challenge-player">???</span>
+                            <div class="challenge-player-box">
+                                <img class="challenge-avatar" id="challenge-p2-avatar" src="" alt="">
+                                <span class="challenge-player" id="challenge-p2">???</span>
+                            </div>
                         </div>
-                        <button class="challenge-btn" id="challenge-btn">
-                            <span class="challenge-btn-text">ATTEMPT TODAY</span>
-                        </button>
+                        <div class="challenge-actions">
+                            <button class="challenge-btn" id="challenge-btn">
+                                <span class="challenge-btn-text">ATTEMPT TODAY</span>
+                                <span class="challenge-btn-reward" id="challenge-reward">+100 XP</span>
+                            </button>
+                            <span class="challenge-date" id="challenge-date"></span>
+                        </div>
                     </div>
 
                     <div class="game-mode-selector">
@@ -423,6 +436,25 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Team Battle Start Button -->
+                    <div class="team-vs-section">
+                        <button class="vs-section team-start-btn" id="team-start-btn" style="display: none;">
+                            <div class="vs-container">
+                                <div class="vs-electricity"></div>
+                                <div class="vs-badge">
+                                    <span class="vs-text">⚔️</span>
+                                </div>
+                                <div class="vs-electricity"></div>
+                            </div>
+                            <div class="vs-sparks">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="vs-hint">
+                                <span class="key-hint">START TEAM</span>
+                            </div>
+                        </button>
                     </div>
 
                     <div class="error-display" id="error-msg"></div>
