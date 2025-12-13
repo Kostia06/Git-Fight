@@ -490,9 +490,9 @@ function setupEventListeners() {
 
     // Individual player roller buttons
     $$('.input-roller-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
             const playerNum = e.target.dataset.player;
-            rollRandomPlayer(playerNum);
+            await rollRandomPlayer(playerNum);
         });
     });
 
@@ -1257,7 +1257,7 @@ function updateURL(p1, p2) {
 let currentMode = '1v1'; // Game mode: '1v1' or 'random'
 
 
-function rollRandomPlayer(playerNum) {
+async function rollRandomPlayer(playerNum) {
     // Get the specific roller button
     const rollerBtn = document.querySelector(`[data-player="${playerNum}"]`);
 
@@ -1277,14 +1277,22 @@ function rollRandomPlayer(playerNum) {
         card.classList.add('rolling');
     }
 
-    // Generate random player after a short delay
-    setTimeout(() => {
-        const randomDev = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
-        $(inputId).value = randomDev;
+    // Fetch random GitHub user
+    try {
+        const randomUser = await getRandomGitHubUser();
 
-        // Trigger preview update
+        if (randomUser) {
+            $(inputId).value = randomUser;
+            // Trigger preview update
+            previewPlayer(inputId, cardId);
+        }
+    } catch (error) {
+        console.warn('Failed to fetch random user:', error);
+        // Fallback to curated list if API fails
+        const fallbackDev = FAMOUS_DEVS[Math.floor(Math.random() * FAMOUS_DEVS.length)];
+        $(inputId).value = fallbackDev;
         previewPlayer(inputId, cardId);
-
+    } finally {
         // Remove rolling animation from card
         if (card) {
             card.classList.remove('rolling');
@@ -1292,7 +1300,40 @@ function rollRandomPlayer(playerNum) {
 
         // Remove rolling animation from button
         rollerBtn.classList.remove('rolling');
-    }, 200);
+    }
+}
+
+async function getRandomGitHubUser() {
+    // Query GitHub API for random users
+    // Using search API to get users sorted by followers (to avoid bots/spam)
+    try {
+        // Get a random starting point for pagination
+        const randomPage = Math.floor(Math.random() * 100) + 1;
+        const perPage = 100;
+
+        const response = await fetch(
+            `https://api.github.com/search/users?q=followers:>100&sort=followers&order=desc&page=${randomPage}&per_page=${perPage}&type=user`
+        );
+
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            throw new Error('No users found');
+        }
+
+        // Pick a random user from the results
+        const randomIndex = Math.floor(Math.random() * data.items.length);
+        const randomUser = data.items[randomIndex];
+
+        return randomUser.login;
+    } catch (error) {
+        console.error('Error fetching random GitHub user:', error);
+        throw error;
+    }
 }
 
 async function startTeamBattle() {
