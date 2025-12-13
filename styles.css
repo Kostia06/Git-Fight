@@ -509,6 +509,13 @@ body {
     }
 }
 
+/* Remove max-width constraint on larger screens for flexible layout */
+@media (min-width: 1024px) {
+    .arcade-cabinet {
+        max-width: none;
+    }
+}
+
 .cabinet-top {
     display: none;
 }
@@ -5467,15 +5474,21 @@ body {
         justify-items: center;
     }
 
-    .player-card.p1,
-    .player-card.p2 {
+    .player-card.p1 {
+        order: 1;
         justify-self: center;
         max-width: 300px;
     }
 
     .vs-section {
-        order: -1;
+        order: 2;
         padding: 5px 0;
+    }
+
+    .player-card.p2 {
+        order: 3;
+        justify-self: center;
+        max-width: 300px;
     }
 
     .vs-section::before,
@@ -6530,7 +6543,8 @@ body {
 /* Tablets Landscape (1024px-1279px) - Full side-by-side experience */
 @media (min-width: 1024px) and (max-width: 1279px) {
     .arcade-cabinet {
-        max-width: 90%;
+        max-width: 96%;
+        width: auto;
         margin: 20px auto;
     }
 
@@ -6556,12 +6570,14 @@ body {
 
     .player-select {
         display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: minmax(280px, 1fr) auto minmax(280px, 1fr);
         gap: 20px;
+        width: 100%;
     }
 
     .player-card {
         padding: 15px;
+        min-width: 280px;
     }
 
     .avatar-container {
@@ -6579,18 +6595,34 @@ body {
     }
 }
 
-/* Even larger screens - keep container compact */
+/* Desktop - Flexible width to fit content */
 @media (min-width: 1200px) {
     .arcade-cabinet {
-        max-width: 700px;
+        max-width: 96%;
+        width: auto;
         margin: 20px auto;
+    }
+
+    .player-select {
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) auto minmax(280px, 1fr);
+        gap: 25px;
+    }
+
+    .player-card {
+        min-width: 290px;
     }
 }
 
 @media (min-width: 1600px) {
     .arcade-cabinet {
-        max-width: 700px;
-        margin: 20px auto;
+        max-width: 98%;
+        width: auto;
+        margin: 25px auto;
+    }
+
+    .player-select {
+        gap: 30px;
     }
 
     .sun {
