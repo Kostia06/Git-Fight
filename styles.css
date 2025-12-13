@@ -1541,10 +1541,11 @@ body {
 .player-select.team-mode {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 15px;
-    align-items: center;
+    grid-template-rows: auto auto auto;
+    gap: 15px 20px;
+    align-items: start;
     justify-items: center;
+    padding: 10px;
 }
 
 /* Team mode: hide vs buttons */
@@ -1558,56 +1559,70 @@ body {
     width: 100%;
 }
 
+/* Uniform card sizing for team mode */
+.player-select.team-mode .player-card {
+    max-width: 220px !important;
+    width: 100%;
+    justify-self: center !important;
+}
+
 /* Grid positioning for team mode 2x2 layout */
-/* Team Alpha - Row 1 */
+/* Team Alpha - Left side (Cyan) */
 .player-select.team-mode .player-card.p1 {
     grid-column: 1;
     grid-row: 1;
     border-color: var(--neon-cyan);
     box-shadow: 0 0 20px rgba(5, 217, 232, 0.5);
-    background: linear-gradient(135deg, rgba(5, 217, 232, 0.05) 0%, rgba(5, 217, 232, 0) 100%);
+    background: linear-gradient(135deg, rgba(5, 217, 232, 0.1) 0%, rgba(5, 217, 232, 0.02) 100%);
 }
 
 .player-select.team-mode .player-card.p1 .player-role {
     color: var(--neon-cyan);
 }
 
+/* Team Alpha Right - Right side (Cyan) */
 .player-select.team-mode .player-card.p3 {
     grid-column: 2;
     grid-row: 1;
     border-color: var(--neon-cyan);
     box-shadow: 0 0 20px rgba(5, 217, 232, 0.4);
-    background: linear-gradient(135deg, rgba(5, 217, 232, 0.05) 0%, rgba(5, 217, 232, 0) 100%);
+    background: linear-gradient(135deg, rgba(5, 217, 232, 0.1) 0%, rgba(5, 217, 232, 0.02) 100%);
 }
 
 .player-select.team-mode .player-card.p3 .player-role {
     color: var(--neon-cyan);
 }
 
-/* Team Beta - Row 2 */
+/* Team Beta - Left side (Pink) */
 .player-select.team-mode .player-card.p2 {
-    display: block !important;
     grid-column: 1;
     grid-row: 2;
     border-color: var(--neon-pink);
     box-shadow: 0 0 20px rgba(255, 42, 109, 0.4);
-    background: linear-gradient(135deg, rgba(255, 42, 109, 0.05) 0%, rgba(255, 42, 109, 0) 100%);
+    background: linear-gradient(135deg, rgba(255, 42, 109, 0.1) 0%, rgba(255, 42, 109, 0.02) 100%);
 }
 
 .player-select.team-mode .player-card.p2 .player-role {
     color: var(--neon-pink);
 }
 
+/* Team Beta Right - Right side (Pink) */
 .player-select.team-mode .player-card.p4 {
     grid-column: 2;
     grid-row: 2;
     border-color: var(--neon-pink);
     box-shadow: 0 0 20px rgba(255, 42, 109, 0.4);
-    background: linear-gradient(135deg, rgba(255, 42, 109, 0.05) 0%, rgba(255, 42, 109, 0) 100%);
+    background: linear-gradient(135deg, rgba(255, 42, 109, 0.1) 0%, rgba(255, 42, 109, 0.02) 100%);
 }
 
 .player-select.team-mode .player-card.p4 .player-role {
     color: var(--neon-pink);
+}
+
+/* Team start button in row 3 spanning both columns */
+.player-select.team-mode .team-vs-section {
+    grid-column: 1 / -1;
+    grid-row: 3;
 }
 
 /* Hide random start button by default */

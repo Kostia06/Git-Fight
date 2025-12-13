@@ -485,9 +485,18 @@ async function initDailyChallenge() {
 }
 
 function startDailyBattle(challenge) {
+    // Set both player values
     $('player1').value = challenge.player1;
     $('player2').value = challenge.player2;
-    $('mode-1v1').click(); // Switch to 1v1 mode
+
+    // Update previews for both players
+    previewPlayer('player1', 'p1');
+    previewPlayer('player2', 'p2');
+
+    // Switch to 1v1 mode
+    $('mode-1v1').click();
+
+    // Start battle
     startBattle();
 }
 
